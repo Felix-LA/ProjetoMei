@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var connectionString = builder.GetConnectionString("AppDbConnectionString");
+var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionString");
 
 builder.Services.AddDbContext<MeiDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
