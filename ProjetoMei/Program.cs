@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProjetoMei.Data;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +11,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionString");
+builder.Services.AddDbContext<MeiDbContext>(options =>
+{
+    options.UseInMemoryDatabase("MyDatabase");
+});
 
-builder.Services.AddDbContext<MeiDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+//var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionString");
+
+//builder.Services.AddDbContext<MeiDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 var app = builder.Build();
 
