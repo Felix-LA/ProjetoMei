@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.EntityFrameworkCore;
 using ProjetoMei.Data;
+using ProjetoMei.DataModel;
+using ProjetoMei.Interfaces;
 using ProjetoMei.Model;
 
 namespace ProjetoMei.Controller
@@ -14,54 +16,56 @@ namespace ProjetoMei.Controller
     [Route("api/[controller]")]
     public class UsuarioMeiController : ControllerBase
     {
-        private readonly MeiDbContext _meiDbContext;
-
-        public UsuarioMeiController(MeiDbContext meiDbContext)
+        public readonly IUsuarioMeiService usuarioMeiService;
+        public UsuarioMeiController(IUsuarioMeiService _usuarioMeiService)
         {
-            _meiDbContext = meiDbContext;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AdicionarUsuario(UsuarioMeiModel usuarioMeiModel)
-        {
-            _meiDbContext.Meis.Add(usuarioMeiModel);
-            await _meiDbContext.SaveChangesAsync();
-
-            return Ok("Usuário Cadastrado com Sucesso");
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<UsuarioMeiModel>>> BuscarUsuarios()
-        {
-            var usuarios = await _meiDbContext.Meis.ToListAsync();
-
-            return usuarios;
-        }
-
-        [HttpGet("Id")]
-        public async Task<IActionResult> BuscarUsuarioPorId (int id)
-        {
-            var usuario = await _meiDbContext.Meis.FindAsync(id);
-            if (usuario == null)
-            {
-                return NotFound("Usuário Não Encontrado");
-            }
-
-            return Ok(usuario);
-        }
-
-        [HttpGet("Nome")]
-        public async Task<IActionResult> BuscarUsuarioPorNome (string nome)
-        {
-            var Usuario = await _meiDbContext.Meis.FirstOrDefaultAsync(usuario => usuario.Nome.ToLower() == nome.ToLower());
-            if (Usuario == null)
-            {
-                return NotFound("Usuário Não Encontrado");
-            }
-
-            return Ok(Usuario);
+            usuarioMeiService = _usuarioMeiService;
         }
 
         
+        [HttpPost("Adicionar Usuario")]
+        public async Task<IActionResult> AdicionarUsuario(UsuarioMeiDataModel usuarioMeiDataModel)
+        {
+            UsuarioMeiModel usuarioMeiModel = usuarioMeiService.Adicionar(usuarioMeiDataModel);
+
+            return Ok(usuarioMeiModel);
+        }
+
+
+        [HttpGet("Buscar Usuarios")]
+        public async Task<ActionResult<IEnumerable<UsuarioMeiModel>>> BuscarUsuarios()
+        {
+            List<UsuarioMeiModel> usuarioMeiModels = usuarioMeiService.BuscarUsuarios();
+
+            return Ok(usuarioMeiModels);
+        }
+
+        
+        [HttpGet("Busca Por Id")]
+        public async Task<IActionResult> BuscarUsuarioPorId (int Id)
+        {
+            UsuarioMeiModel usuarioMeiModel = usuarioMeiService.BuscarUsuarioPorId(Id);
+
+            return Ok(usuarioMeiModel);
+        }
+
+        /*
+        [HttpGet("Busca Por Nome")]
+        public async Task<IActionResult> BuscarUsuarioPorNome (string nome)
+        {
+            UsuarioMeiModel usuarioMeiModel = usuarioMeiService.BuscarUsuarioPorNome(nome);
+
+            return Ok(usuarioMeiModel);
+        }
+
+        */
+
+        [HttpDelete("Id")]
+        public bool DeletarPorID(int Id)
+        {
+            return usuarioMeiService.Deletar(Id);
+        }
+
+
     }
 }

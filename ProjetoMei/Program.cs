@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using ProjetoMei.Data;
+using ProjetoMei.Interfaces;
+using ProjetoMei.Repository;
+using ProjetoMei.Services;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,10 +14,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.AddTransient<IUsuarioMeiService, UsuarioMeiService>();
+builder.Services.AddTransient<IUsuarioMeiRepository, UsuarioMeiRepository>();
+
+
 builder.Services.AddDbContext<MeiDbContext>(options =>
 {
     options.UseInMemoryDatabase("MyDatabase");
 });
+
+
+
+
+
+
 
 //var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionString");
 
