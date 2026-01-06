@@ -12,6 +12,6 @@ namespace ProjetoMei.Interfaces
         UsuarioMeiModel Adicionar(UsuarioMeiDataModel usuarioMeiDataModel);
         UsuarioMeiModel Atualizar(UsuarioMeiDataModel usuarioMeiDataModel, int Id);
         bool Deletar(int Id);
-
+        
     }
 }

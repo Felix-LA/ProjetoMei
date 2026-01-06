@@ -10,7 +10,7 @@ namespace ProjetoMei.Interfaces
         UsuarioMeiModel BuscarUsuarioPorId(int Id);
        // UsuarioMeiModel BuscarUsuarioPorNome(string Nome);
         UsuarioMeiModel Adicionar(UsuarioMeiDataModel usuarioMeiDataModel);
-        UsuarioMeiModel Atualizar(MeiDbContext meiDbContext, int Id);
+        UsuarioMeiModel Atualizar(UsuarioMeiDataModel usuarioMeiDataModel, int Id);
         bool Deletar(int Id);
     }
 }

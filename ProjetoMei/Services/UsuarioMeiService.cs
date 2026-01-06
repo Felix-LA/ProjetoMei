@@ -3,6 +3,7 @@ using ProjetoMei.DataModel;
 using ProjetoMei.Interfaces;
 using ProjetoMei.Model;
 using ProjetoMei.Repository;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ProjetoMei.Services
 {
@@ -35,9 +36,10 @@ namespace ProjetoMei.Services
         */
 
 
-        public UsuarioMeiModel Atualizar(MeiDbContext meiDbContext, int Id)
+        public UsuarioMeiModel Atualizar(UsuarioMeiDataModel usuarioMeiDataModel, int Id)
         {
-            throw new NotImplementedException();
+            return iUsuarioMeiRepository.Atualizar(usuarioMeiDataModel, Id);
+
         }
 
         public bool Deletar(int Id)

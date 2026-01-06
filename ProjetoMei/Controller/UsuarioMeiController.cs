@@ -60,6 +60,16 @@ namespace ProjetoMei.Controller
 
         */
 
+
+        [HttpPut("Atualizar")]
+        public IActionResult Atualizar(UsuarioMeiDataModel usuarioMeiDataModel, int Id) 
+        { 
+            usuarioMeiDataModel.Id = Id;
+            UsuarioMeiModel usuarioMeiModel = usuarioMeiService.Atualizar(usuarioMeiDataModel, Id);
+
+            return Ok(usuarioMeiDataModel);
+        }
+
         [HttpDelete("Id")]
         public bool DeletarPorID(int Id)
         {

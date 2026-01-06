@@ -43,7 +43,7 @@ namespace ProjetoMei.Repository
         {
             var usuario = _meiDbContext.Meis.Find(Id);
             
-            if (usuario == null)
+            if (usuario == null || Id == 0)
             {
                 throw new Exception("Usuário Não Encontrado");
             }
@@ -54,7 +54,19 @@ namespace ProjetoMei.Repository
 
         public UsuarioMeiModel Atualizar(UsuarioMeiDataModel usuarioMeiDataModel, int Id)
         {
-            throw new NotImplementedException();
+            var atualizarUsuarioMEI = _meiDbContext.Meis.FirstOrDefault(mei => mei.Id == Id);
+
+            if(atualizarUsuarioMEI == null)
+            {
+                throw new Exception("Usuário não Encontrado");
+            }
+
+            atualizarUsuarioMEI.Nome = usuarioMeiDataModel.Nome;
+
+            _meiDbContext.Meis.Update(atualizarUsuarioMEI);
+            _meiDbContext.SaveChanges();
+
+            return atualizarUsuarioMEI;
         }
 
         /*
