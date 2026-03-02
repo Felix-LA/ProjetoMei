@@ -49,7 +49,7 @@ namespace ProjetoMei.Controller
             return Ok(usuarioMeiModel);
         }
 
-        /*
+        
         [HttpGet("Busca Por Nome")]
         public async Task<IActionResult> BuscarUsuarioPorNome (string nome)
         {
@@ -58,7 +58,7 @@ namespace ProjetoMei.Controller
             return Ok(usuarioMeiModel);
         }
 
-        */
+        
 
 
         [HttpPut("Atualizar")]

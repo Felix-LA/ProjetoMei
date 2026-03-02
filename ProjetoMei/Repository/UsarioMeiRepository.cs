@@ -69,10 +69,10 @@ namespace ProjetoMei.Repository
             return atualizarUsuarioMEI;
         }
 
-        /*
-        public UsuarioMeiModel BuscarUsuarioPorNome(UsuarioMeiDataModel usuarioMeiDataModel, string Nome)
+        
+        public UsuarioMeiModel BuscarUsuarioPorNome(string Nome)
         {
-            var usuario = _meiDbContext.Meis.Where(nome => nome.Nome.Contains(Nome)).ToList();
+            var usuario = _meiDbContext.Meis.FirstOrDefault(nome => nome.Nome.Contains(Nome));
 
             if (usuario == null)
             {
@@ -82,7 +82,7 @@ namespace ProjetoMei.Repository
             return usuario;
         }
         
-        */
+        
         
 
         public bool Deletar(int Id)

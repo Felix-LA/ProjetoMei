@@ -28,12 +28,12 @@ namespace ProjetoMei.Services
         {
             return iUsuarioMeiRepository.BuscarUsuarioPorId(Id);
         }
-        /*
+        
         public UsuarioMeiModel BuscarUsuarioPorNome(string Nome)
         {
             return iUsuarioMeiRepository.BuscarUsuarioPorNome(Nome);
         }
-        */
+        
 
 
         public UsuarioMeiModel Atualizar(UsuarioMeiDataModel usuarioMeiDataModel, int Id)

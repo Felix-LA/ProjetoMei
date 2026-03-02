@@ -8,7 +8,7 @@ namespace ProjetoMei.Interfaces
     {
         List<UsuarioMeiModel> BuscarUsuarios();
         UsuarioMeiModel BuscarUsuarioPorId(int Id);
-        //UsuarioMeiModel BuscarUsuarioPorNome( string Nome);
+        UsuarioMeiModel BuscarUsuarioPorNome( string Nome);
         UsuarioMeiModel Adicionar(UsuarioMeiDataModel usuarioMeiDataModel);
         UsuarioMeiModel Atualizar(UsuarioMeiDataModel usuarioMeiDataModel, int Id);
         bool Deletar(int Id);
