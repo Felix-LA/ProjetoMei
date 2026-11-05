@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Entre em contato com a Vitrine MEI - Sua plataforma para encontrar profissionais MEI qualificados">
+  <meta name="author" content="Vitrine MEI">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <title>Contato - Vitrine MEI</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- CSS Adicional -->
+  <link rel="stylesheet" href="assets/css/fontawesome.css">
+  <link rel="stylesheet" href="assets/css/templatemo-plot-listing.css">
+  <link rel="stylesheet" href="assets/css/animated.css">
+  <link rel="stylesheet" href="assets/css/owl.css">
+  
+  <style>
+    .contact-info-card {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      height: 100%;
+      transition: transform 0.3s ease;
+    }
+    
+    .contact-info-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .contact-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #8d99af 0%, #8495b3 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    
+    .contact-icon i {
+      color: white;
+      font-size: 24px;
+    }
+    
+    .contact-form {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .form-control {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      transition: all 0.3s;
+    }
+    
+    .form-control:focus {
+      border-color: #8d99af;
+      box-shadow: 0 0 0 0.2rem rgba(141, 153, 175, 0.25);
+    }
+    
+    .submit-button {
+      background: linear-gradient(135deg, #8d99af 0%, #8495b3 100%);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s;
+      width: 100%;
+    }
+    
+    .submit-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(141, 153, 175, 0.3);
+    }
+    
+    .contact-header {
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&h=400&q=80');
+      background-size: cover;
+      background-position: center;
+      padding: 100px 0;
+      color: white;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .social-contact {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    
+    .social-contact a {
+      width: 50px;
+      height: 50px;
+      background: #f8f9fa;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      transition: all 0.3s;
+    }
+    
+    .social-contact a:hover {
+      background: #8d99af;
+      color: white;
+      transform: translateY(-3px);
+    }
+    
+    .faq-section {
+      margin-top: 80px;
+    }
+    
+    .faq-item {
+      margin-bottom: 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .faq-question {
+      padding: 20px;
+      background: #f8f9fa;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .faq-answer {
+      padding: 20px;
+      display: none;
+    }
+    
+    .faq-question.active {
+      background: #8d99af;
+      color: white;
+    }
+    
+    .faq-question.active i {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- ***** Área do Cabeçalho Início ***** -->
+  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Início ***** -->
+            <a href="index.html" class="name-site logo">Vitrine MEI</a>
+            <!-- ***** Logo Fim ***** -->
+            <!-- ***** Menu Início ***** -->
+            <ul class="nav">
+              <li><a href="index.html">Início</a></li>
+              <li><a href="category.html">Categorias</a></li>
+              <li><a href="listing.html">Profissionais</a></li>
+              <li><a href="contact.html" class="active">Contato</a></li>
+              <li>
+                <div class="main-white-button"><a href="cadastro-mei.html"><i class="fa fa-user-plus"></i> Cadastrar MEI</a></div>
+              </li>
+            </ul>
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+            <!-- ***** Menu Fim ***** -->
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- ***** Área do Cabeçalho Fim ***** -->
+
+  <!-- ***** Cabeçalho da Página ***** -->
+  <div class="contact-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h1>Entre em Contato</h1>
+          <p class="lead" style="color: #fff;">Estamos aqui para ajudar você a encontrar o profissional MEI ideal ou esclarecer suas dúvidas</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ***** Seção de Contato ***** -->
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-md-4">
+        <div class="contact-info-card">
+          <div class="contact-icon">
+            <i class="fas fa-phone-alt"></i>
+          </div>
+          <h4>Telefone</h4>
+          <p>Segunda a Sexta: 9h às 18h</p>
+          <h5>(11) 99999-9999</h5>
+          <p class="text-muted">WhatsApp disponível</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="contact-info-card">
+          <div class="contact-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <h4>Email</h4>
+          <p>Resposta em até 24 horas</p>
+          <h5>contato@vitrinemei.com.br</h5>
+          <p class="text-muted">suporte@vitrinemei.com.br</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="contact-info-card">
+          <div class="contact-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <h4>Endereço</h4>
+          <p>Escritório Central</p>
+          <h5>Av. Paulista, 1000</h5>
+          <p class="text-muted">São Paulo - SP, 01310-100</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="contact-form">
+          <h3 class="mb-4">Envie uma Mensagem</h3>
+          <form id="contact-form" method="POST">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="name" name="name" placeholder="Seu Nome *" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Seu Email *" required>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <input type="text" class="form-control" id="subject" name="subject" placeholder="Assunto *" required>
+            </div>
+            
+            <div class="form-group">
+              <select class="form-control" id="tipo-contato" name="tipo-contato" required>
+                <option value="">Selecione o tipo de contato *</option>
+                <option value="cliente">Sou Cliente - Buscando Profissional</option>
+                <option value="mei">Sou MEI - Quero me Cadastrar</option>
+                <option value="duvida">Dúvida sobre a Plataforma</option>
+                <option value="sugestao">Sugestão ou Feedback</option>
+                <option value="parceria">Proposta de Parceria</option>
+                <option value="outro">Outro Assunto</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <textarea class="form-control" id="message" name="message" rows="6" placeholder="Sua Mensagem *" required></textarea>
+            </div>
+            
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter">
+                <label class="form-check-label" for="newsletter">
+                  Desejo receber novidades e ofertas da Vitrine MEI
+                </label>
+              </div>
+            </div>
+            
+            <button type="submit" class="submit-button">
+              <i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem
+            </button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 mt-5 mt-lg-0">
+        <div class="contact-info-card">
+          <h4 class="mb-4">Horário de Atendimento</h4>
+          <div class="mb-4">
+            <h6>Atendimento ao Cliente</h6>
+            <p class="mb-2">Segunda a Sexta: 9h às 18h</p>
+            <p class="text-muted">Sábado: 9h às 13h</p>
+          </div>
+          
+          <div class="mb-4">
+            <h6>Suporte Técnico</h6>
+            <p class="mb-2">Segunda a Sexta: 8h às 20h</p>
+            <p class="text-muted">Atendimento emergencial</p>
+          </div>
+          
+          <div class="mb-4">
+            <h6>Contato com Profissionais</h6>
+            <p>24 horas via WhatsApp</p>
+            <div class="main-white-button mt-3">
+              <a href="https://wa.me/5511999999999" target="_blank">
+                <i class="fab fa-whatsapp"></i> Falar no WhatsApp
+              </a>
+            </div>
+          </div>
+          
+          <div class="social-contact">
+            <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ***** FAQ Section ***** -->
+    <div class="faq-section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading text-center mb-5">
+            <h2>Perguntas Frequentes</h2>
+            <h6>Encontre respostas rápidas para suas dúvidas</h6>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Como cadastrar meu MEI na plataforma?</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>Para cadastrar seu MEI, clique em "Cadastrar MEI" no menu superior. Você precisará fornecer seus dados pessoais, CNPJ MEI, comprovante de endereço e uma descrição dos seus serviços. O cadastro é gratuito e leva cerca de 10 minutos.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Como faço para contratar um profissional?</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>Navegue pelas categorias ou use a busca para encontrar o profissional desejado. Clique no perfil e use o botão "Solicitar Orçamento" para entrar em contato diretamente com o profissional via WhatsApp ou email. Você pode solicitar orçamentos de vários profissionais para comparar.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>A Vitrine MEI cobra alguma taxa?</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>Para clientes: O uso da plataforma é totalmente gratuito. Você não paga nada para buscar e entrar em contato com profissionais.<br>Para MEIs: O cadastro básico é gratuito. Oferecemos planos premium com benefícios adicionais, mas o plano gratuito já permite divulgar seus serviços.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-6">
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Como funciona o sistema de avaliações?</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>Após a conclusão de um serviço, tanto o cliente quanto o profissional podem se avaliar mutuamente. As avaliações são verificadas e apenas usuários que realmente realizaram transações podem avaliar. Isso garante a confiabilidade do sistema.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Posso cancelar um serviço contratado?</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>O cancelamento depende do acordo estabelecido diretamente com o profissional. Recomendamos sempre formalizar os termos do serviço antes do início. Em caso de problemas, nossa equipe de mediação pode auxiliar na resolução de conflitos.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Como denunciar um profissional?</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>Caso tenha problemas com algum profissional, entre em contato conosco pelo email suporte@vitrinemei.com.br ou pelo WhatsApp (11) 99999-9999. Forneça todas as informações possíveis sobre o ocorrido. Investigaremos a situação e tomaremos as medidas necessárias.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <h5>Vitrine MEI</h5>
+          <p>Conectando profissionais MEI a clientes desde 2023. Seu projeto em boas mãos.</p>
+        </div>
+        <div class="col-lg-4">
+          <h5>Links Rápidos</h5>
+          <ul class="footer-links">
+            <li><a href="como-funciona.html">Como Funciona</a></li>
+            <li><a href="cadastro-mei.html">Cadastrar MEI</a></li>
+            <li><a href="termos.html">Termos de Uso</a></li>
+            <li><a href="privacidade.html">Política de Privacidade</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <h5>Contato</h5>
+          <p>suporte@vitrinemei.com.br<br>(11) 99999-9999</p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="sub-footer">
+            <p>Copyright © 2023 Vitrine MEI - Todos os direitos reservados</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/owl-carousel.js"></script>
+  <script src="assets/js/animation.js"></script>
+  <script src="assets/js/imagesloaded.js"></script>
+  <script src="assets/js/custom.js"></script>
+  
+  <script>
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        const answer = question.nextElementSibling;
+        const isActive = question.classList.contains('active');
+        
+        // Close all FAQs
+        document.querySelectorAll('.faq-question').forEach(q => {
+          q.classList.remove('active');
+          q.nextElementSibling.style.display = 'none';
+        });
+        
+        // Open clicked FAQ if it wasn't active
+        if (!isActive) {
+          question.classList.add('active');
+          answer.style.display = 'block';
+        }
+      });
+    });
+    
+    // Form submission
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Simple form validation
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const subject = document.getElementById('subject').value;
+      const message = document.getElementById('message').value;
+      
+      if (name && email && subject && message) {
+        // Here you would typically send the form data to a server
+        alert('Obrigado! Sua mensagem foi enviada com sucesso. Entraremos em contato em breve.');
+        document.getElementById('contact-form').reset();
+      } else {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+      }
+    });
+    
+    // Auto-open first FAQ
+    document.querySelector('.faq-question').click();
+  </script>
+
+</body>
+
+</html>

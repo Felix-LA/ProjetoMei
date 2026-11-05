@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Vitrine MEI - Conectando profissionais autônomos a clientes. Encontre marceneiros, eletricistas, designers, programadores e muito mais.">
+    <meta name="author" content="Vitrine MEI">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>Vitrine MEI - Conectando Profissionais a Clientes</title>
+
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-plot-listing.css">
+    <link rel="stylesheet" href="assets/css/animated.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+    <style>
+        .mei-badge {
+            background: #4CAF50;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .rating-mei {
+            color: #FFD700;
+        }
+        
+        .service-tag {
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin: 3px;
+            font-size: 13px;
+            display: inline-block;
+        }
+        
+        .verificado {
+            color: #1E88E5;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #8d99af 0%, #8495b3 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .stats-number {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stats-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .profissional-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .categoria-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        
+        .icon-image {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <a href="index.html" class="name-site logo">Vitrine MEI</a>
+                        <ul class="nav">
+                            <li><a href="index.html" class="active">Início</a></li>
+                            <li><a href="category.html">Categorias</a></li>
+                            <li><a href="listing.html">Profissionais</a></li>
+                            <li><a href="contact.html">Contato</a></li>
+                            <li>
+                                <div class="main-white-button"><a href="cadastro-mei.html"><i class="fa fa-user-plus"></i> Cadastrar MEI</a></div>
+                            </li>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="top-text header-text">
+                        <h6>Mais de 5.000+ Profissionais MEI Cadastrados</h6>
+                        <h2>Encontre os Melhores Profissionais para Seu Projeto</h2>
+                        <p class="mt-3" style="color: #fff;">De marceneiros a programadores, designers a eletricistas - tudo em um só lugar!</p>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <form id="search-form" name="gs" method="submit" role="search" action="#">
+                        <div class="row">
+                            <div class="col-lg-4 align-self-center">
+                                <fieldset>
+                                    <select name="categoria" class="form-select" aria-label="Categoria" id="chooseCategory">
+                                        <option selected>Todas as Categorias</option>
+                                        <option value="Construcao">Construção e Reformas</option>
+                                        <option value="Tecnologia">Tecnologia e TI</option>
+                                        <option value="Design">Design e Marketing</option>
+                                        <option value="Servicos">Serviços Domésticos</option>
+                                        <option value="Consultoria">Consultoria</option>
+                                    </select>
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-4 align-self-center">
+                                <fieldset>
+                                    <input type="text" name="localizacao" class="searchText" placeholder="Cidade, bairro ou estado" autocomplete="on" required>
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-4">
+                                <fieldset>
+                                    <button class="main-button"><i class="fa fa-search"></i> Buscar Profissionais</button>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-10 offset-lg-1">
+                    <ul class="categories">
+                        <li><a href="category.html?cat=construcao">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M18 3h-3.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H6c-1.1 0-2 .9-2 2v15c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-6 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm0 4c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/>
+                                </svg>
+                            </span> Construção
+                        </a></li>
+                        
+                        <li><a href="category.html?cat=tecnologia">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+                                </svg>
+                            </span> Tecnologia
+                        </a></li>
+                        
+                        <li><a href="#">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                                    <circle cx="8.5" cy="10.5" r="1.5"/>
+                                    <circle cx="15.5" cy="10.5" r="1.5"/>
+                                    <path d="M12 17.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+                                </svg>
+                            </span> Design
+                        </a></li>
+                        
+                        <li><a href="#">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                                </svg>
+                            </span> Consultoria
+                        </a></li>
+                        
+                        <li><a href="#">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M13 13v8h8v-8h-8zM3 21h8v-8H3v8zM3 3v8h8V3H3zm13.66-1.31L11 7.34 16.66 13l5.66-5.66-5.66-5.65z"/>
+                                </svg>
+                            </span> Serviços
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number">5.000+</div>
+                    <div class="stats-label">MEIs Cadastrados</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number">15.000+</div>
+                    <div class="stats-label">Projetos Concluídos</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number">4.8</div>
+                    <div class="stats-label">Avaliação Média</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number">98%</div>
+                    <div class="stats-label">Clientes Satisfeitos</div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="popular-categories">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Categorias em Destaque</h2>
+                        <h6>Encontre profissionais por área de atuação</h6>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="naccs">
+                        <div class="grid">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="menu">
+                                        <div class="first-thumb active">
+                                            <div class="thumb">
+                                                <span class="icon"><img src="assets/images/search-icon-01.png" alt="Construção"></span> Construção
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="thumb">
+                                                <span class="icon"><img src="assets/images/search-icon-02.png" alt="Tecnologia"></span> Tecnologia
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="thumb">
+                                                <span class="icon"><img src="assets/images/search-icon-03.png" alt="Design"></span> Design
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="thumb">
+                                                <span class="icon"><img src="assets/images/search-icon-04.png" alt="Consultoria"></span> Consultoria
+                                            </div>
+                                        </div>
+                                        <div class="last-thumb">
+                                            <div class="thumb">
+                                                <span class="icon"><img src="assets/images/search-icon-05.png" alt="Serviços"></span> Serviços
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 align-self-center">
+                                    <ul class="nacc">
+                                        <li class="active">
+                                            <div>
+                                                <div class="thumb">
+                                                    <div class="row">
+                                                        <div class="col-lg-5 align-self-center">
+                                                            <div class="left-text">
+                                                                <h4>Profissionais de Construção e Reformas</h4>
+                                                                <p>Encontre pedreiros, eletricistas, encanadores, pintores e marceneiros qualificados para seu projeto. Todos os profissionais são MEIs regularizados e com experiência comprovada.</p>
+                                                                <div class="main-white-button"><a href="category.html?cat=construcao"><i class="fa fa-eye"></i> Ver Profissionais</a></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-7 align-self-center">
+                                                            <div class="right-image">
+                                                                <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80" alt="Profissional de construção">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div>
+                                                <div class="thumb">
+                                                    <div class="row">
+                                                        <div class="col-lg-5 align-self-center">
+                                                            <div class="left-text">
+                                                                <h4>Especialistas em Tecnologia</h4>
+                                                                <p>Desenvolvedores, programadores, técnicos em informática e consultores em TI. Soluções tecnológicas para seu negócio com qualidade profissional e preço acessível.</p>
+                                                                <div class="main-white-button"><a href="category.html?cat=tecnologia"><i class="fa fa-eye"></i> Explorar</a></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-7 align-self-center">
+                                                            <div class="right-image">
+                                                                <img src="https://images.unsplash.com/photo-1523800503107-5bc3ba2a6f81?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt="Profissional de TI">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div>
+                                                <div class="thumb">
+                                                    <div class="row">
+                                                        <div class="col-lg-5 align-self-center">
+                                                            <div class="left-text">
+                                                                <h4>Designers e Marketing Digital</h4>
+                                                                <p>Designers gráficos, social media, redatores e especialistas em marketing digital. Destaque seu negócio com profissionais criativos e atualizados.</p>
+                                                                <div class="main-white-button"><a href="listing.html"><i class="fa fa-eye"></i> Ver Portfólios</a></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-7 align-self-center">
+                                                            <div class="right-image">
+                                                                <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt="Designer trabalhando">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div>
+                                                <div class="thumb">
+                                                    <div class="row">
+                                                        <div class="col-lg-5 align-self-center">
+                                                            <div class="left-text">
+                                                                <h4>Consultores e Assessores</h4>
+                                                                <p>Consultores financeiros, contadores MEI, coaches e especialistas em diversas áreas. Obtenha orientação profissional para alavancar seu negócio.</p>
+                                                                <div class="main-white-button"><a href="#"><i class="fa fa-eye"></i> Saber Mais</a></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-7 align-self-center">
+                                                            <div class="right-image">
+                                                                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt="Consultoria">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div>
+                                                <div class="thumb">
+                                                    <div class="row">
+                                                        <div class="col-lg-5 align-self-center">
+                                                            <div class="left-text">
+                                                                <h4>Serviços Diversos</h4>
+                                                                <p>Fotógrafos, organizadores, limpeza, manutenção e muito mais. Encontre profissionais para todas as necessidades do seu dia a dia ou negócio.</p>
+                                                                <div class="main-white-button"><a href="#"><i class="fa fa-eye"></i> Descobrir</a></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-7 align-self-center">
+                                                            <div class="right-image">
+                                                                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt="Serviços diversos">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="recent-listing">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Profissionais em Destaque</h2>
+                        <h6>Conheça alguns dos nossos MEIs mais bem avaliados</h6>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="owl-carousel owl-listing">
+                        <div class="item">
+                            <div class="row">
+                                <!-- Marceneiro -->
+                                <div class="col-lg-12">
+                                    <div class="listing-item">
+                                        <div class="left-image">
+                                            <a href="#"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt="Marceneiro" class="profissional-image"></a>
+                                            <span class="mei-badge">MEI Regularizado</span>
+                                        </div>
+                                        <div class="right-content align-self-center">
+                                            <a href="#">
+                                                <h4>Carlos Silva <i class="fa fa-check-circle verificado"></i></h4>
+                                            </a>
+                                            <h6>Marceneiro Profissional</h6>
+                                            <div class="mb-2">
+                                                <span class="service-tag">Móveis Sob Medida</span>
+                                                <span class="service-tag">Reformas</span>
+                                                <span class="service-tag">Instalação</span>
+                                            </div>
+                                            <ul class="rate">
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star-half-o rating-mei"></i></li>
+                                                <li>(127) Avaliações</li>
+                                            </ul>
+                                            <span class="price"><i class="fa fa-money-bill-wave"></i> R$ 80 - R$ 150 / hora</span>
+                                            <span class="details">Experiência: <em>8 anos</em></span>
+                                            <ul class="info">
+                                                <li><i class="fa fa-map-marker-alt"></i> São Paulo - SP</li>
+                                                <li><i class="fa fa-briefcase"></i> 245 projetos</li>
+                                            </ul>
+                                            <div class="main-white-button">
+                                                <a href="contact.html"><i class="fa fa-whatsapp"></i> Solicitar Orçamento</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Programadora -->
+                                <div class="col-lg-12">
+                                    <div class="listing-item">
+                                        <div class="left-image">
+                                            <a href="#"><img src="https://images.unsplash.com/photo-1575089976121-8ed7b2a54265?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt="Programadora" class="profissional-image"></a>
+                                            <span class="mei-badge">MEI Regularizado</span>
+                                        </div>
+                                        <div class="right-content align-self-center">
+                                            <a href="#">
+                                                <h4>Ana Costa <i class="fa fa-check-circle verificado"></i></h4>
+                                            </a>
+                                            <h6>Desenvolvedora Web Full Stack</h6>
+                                            <div class="mb-2">
+                                                <span class="service-tag">Sites</span>
+                                                <span class="service-tag">Sistemas Web</span>
+                                                <span class="service-tag">WordPress</span>
+                                            </div>
+                                            <ul class="rate">
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li>(89) Avaliações</li>
+                                            </ul>
+                                            <span class="price"><i class="fa fa-money-bill-wave"></i> R$ 100 - R$ 200 / hora</span>
+                                            <span class="details">Tecnologias: <em>React, Node.js, PHP</em></span>
+                                            <ul class="info">
+                                                <li><i class="fa fa-globe"></i> Remoto</li>
+                                                <li><i class="fa fa-briefcase"></i> 156 projetos</li>
+                                            </ul>
+                                            <div class="main-white-button">
+                                                <a href="contact.html"><i class="fa fa-whatsapp"></i> Solicitar Orçamento</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Eletricista -->
+                                <div class="col-lg-12">
+                                    <div class="listing-item">
+                                        <div class="left-image">
+                                            <a href="#"><img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt="Eletricista" class="profissional-image"></a>
+                                            <span class="mei-badge">MEI Regularizado</span>
+                                        </div>
+                                        <div class="right-content align-self-center">
+                                            <a href="#">
+                                                <h4>Roberto Santos <i class="fa fa-check-circle verificado"></i></h4>
+                                            </a>
+                                            <h6>Eletricista Residencial e Industrial</h6>
+                                            <div class="mb-2">
+                                                <span class="service-tag">Instalações</span>
+                                                <span class="service-tag">Manutenção</span>
+                                                <span class="service-tag">Laudos</span>
+                                            </div>
+                                            <ul class="rate">
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star-o"></i></li>
+                                                <li>(203) Avaliações</li>
+                                            </ul>
+                                            <span class="price"><i class="fa fa-money-bill-wave"></i> R$ 70 - R$ 120 / hora</span>
+                                            <span class="details">Certificado: <em>CREA/CRC</em></span>
+                                            <ul class="info">
+                                                <li><i class="fa fa-map-marker-alt"></i> Rio de Janeiro - RJ</li>
+                                                <li><i class="fa fa-briefcase"></i> 12 anos experiência</li>
+                                            </ul>
+                                            <div class="main-white-button">
+                                                <a href="contact.html"><i class="fa fa-whatsapp"></i> Solicitar Orçamento</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Segunda página do carrossel -->
+                        <div class="item">
+                            <div class="row">
+                                <!-- Designer -->
+                                <div class="col-lg-12">
+                                    <div class="listing-item">
+                                        <div class="left-image">
+                                            <a href="#"><img src="https://images.unsplash.com/photo-1565106430482-8f6e74349ca1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt="Designer" class="profissional-image"></a>
+                                            <span class="mei-badge">MEI Regularizado</span>
+                                        </div>
+                                        <div class="right-content align-self-center">
+                                            <a href="#">
+                                                <h4>Fernanda Lima <i class="fa fa-check-circle verificado"></i></h4>
+                                            </a>
+                                            <h6>Designer Gráfica e Social Media</h6>
+                                            <div class="mb-2">
+                                                <span class="service-tag">Logotipos</span>
+                                                <span class="service-tag">Posts</span>
+                                                <span class="service-tag">Identidade Visual</span>
+                                            </div>
+                                            <ul class="rate">
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li>(142) Avaliações</li>
+                                            </ul>
+                                            <span class="price"><i class="fa fa-money-bill-wave"></i> R$ 60 - R$ 150 / projeto</span>
+                                            <span class="details">Especialidade: <em>Branding Digital</em></span>
+                                            <ul class="info">
+                                                <li><i class="fa fa-map-marker-alt"></i> Belo Horizonte - MG</li>
+                                                <li><i class="fa fa-briefcase"></i> 5 anos experiência</li>
+                                            </ul>
+                                            <div class="main-white-button">
+                                                <a href="contact.html"><i class="fa fa-whatsapp"></i> Solicitar Orçamento</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Contador -->
+                                <div class="col-lg-12">
+                                    <div class="listing-item">
+                                        <div class="left-image">
+                                            <a href="#"><img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt="Contador" class="profissional-image"></a>
+                                            <span class="mei-badge">MEI Regularizado</span>
+                                        </div>
+                                        <div class="right-content align-self-center">
+                                            <a href="#">
+                                                <h4>José Almeida <i class="fa fa-check-circle verificado"></i></h4>
+                                            </a>
+                                            <h6>Contador Especializado em MEI</h6>
+                                            <div class="mb-2">
+                                                <span class="service-tag">Declarações</span>
+                                                <span class="service-tag">Abertura</span>
+                                                <span class="service-tag">Consultoria</span>
+                                            </div>
+                                            <ul class="rate">
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star-half-o rating-mei"></i></li>
+                                                <li>(98) Avaliações</li>
+                                            </ul>
+                                            <span class="price"><i class="fa fa-money-bill-wave"></i> R$ 150 - R$ 300 / mês</span>
+                                            <span class="details">Especialidade: <em>MEIs e Microempresas</em></span>
+                                            <ul class="info">
+                                                <li><i class="fa fa-map-marker-alt"></i> Porto Alegre - RS</li>
+                                                <li><i class="fa fa-briefcase"></i> CRC Ativo</li>
+                                            </ul>
+                                            <div class="main-white-button">
+                                                <a href="contact.html"><i class="fa fa-whatsapp"></i> Solicitar Orçamento</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fotógrafa -->
+                                <div class="col-lg-12">
+                                    <div class="listing-item">
+                                        <div class="left-image">
+                                            <a href="#"><img src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt="Fotógrafa" class="profissional-image"></a>
+                                            <span class="mei-badge">MEI Regularizado</span>
+                                        </div>
+                                        <div class="right-content align-self-center">
+                                            <a href="#">
+                                                <h4>Mariana Oliveira <i class="fa fa-check-circle verificado"></i></h4>
+                                            </a>
+                                            <h6>Fotógrafa Profissional</h6>
+                                            <div class="mb-2">
+                                                <span class="service-tag">Casamentos</span>
+                                                <span class="service-tag">Produtos</span>
+                                                <span class="service-tag">Retratos</span>
+                                            </div>
+                                            <ul class="rate">
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li><i class="fa fa-star rating-mei"></i></li>
+                                                <li>(167) Avaliações</li>
+                                            </ul>
+                                            <span class="price"><i class="fa fa-money-bill-wave"></i> R$ 300 - R$ 1.500 / evento</span>
+                                            <span class="details">Equipamento: <em>Canon Full Frame</em></span>
+                                            <ul class="info">
+                                                <li><i class="fa fa-map-marker-alt"></i> Salvador - BA</li>
+                                                <li><i class="fa fa-briefcase"></i> 7 anos experiência</li>
+                                            </ul>
+                                            <div class="main-white-button">
+                                                <a href="contact.html"><i class="fa fa-whatsapp"></i> Solicitar Orçamento</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2>Vantagens da Vitrine MEI</h2>
+                    <h6>Por que escolher nossos profissionais</h6>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <h4>MEIs Verificados</h4>
+                    <p>Todos os profissionais são MEIs regularizados com CNPJ ativo e documentos verificados.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <h4>Avaliações Reais</h4>
+                    <p>Sistema de avaliações por projetos concluídos, garantindo transparência e confiança.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <h4>Orçamentos Gratuitos</h4>
+                    <p>Solicite orçamentos de múltiplos profissionais e escolha a melhor proposta.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h5>Vitrine MEI</h5>
+                    <p>Conectando profissionais MEI a clientes desde 2023. Ajudamos microempreendedores a expandir seus negócios.</p>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Links Rápidos</h5>
+                    <ul class="footer-links">
+                        <li><a href="como-funciona.html">Como Funciona</a></li>
+                        <li><a href="cadastro-mei.html">Cadastrar MEI</a></li>
+                        <li><a href="termos.html">Termos de Uso</a></li>
+                        <li><a href="privacidade.html">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Contato</h5>
+                    <p>suporte@vitrinemei.com.br<br>(11) 99999-9999</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-linkedin"></i></a>
+                        <a href="#"><i class="fa fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="sub-footer">
+                        <p>Copyright © 2023 Vitrine MEI - Todos os direitos reservados</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/animation.js"></script>
+    <script src="assets/js/imagesloaded.js"></script>
+    <script src="assets/js/custom.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Cadastre seu MEI na Vitrine MEI e comece a receber propostas de trabalho agora mesmo">
+    <meta name="author" content="Vitrine MEI">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <title>Cadastrar MEI - Vitrine MEI</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS Adicional -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-plot-listing.css">
+    <link rel="stylesheet" href="assets/css/animated.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+    
+    <style>
+        .cadastro-header {
+            background: linear-gradient(rgba(141, 153, 175, 0.9), rgba(132, 149, 179, 0.9)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&h=500&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 0;
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .form-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+            opacity: 0.5;
+            transition: all 0.3s;
+        }
+        
+        .step.active {
+            opacity: 1;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #8d99af;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .step.active .step-number {
+            background: #4CAF50;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 15px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #8d99af;
+            box-shadow: 0 0 0 0.2rem rgba(141, 153, 175, 0.25);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-group input {
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+        
+        .btn-next, .btn-prev, .btn-submit {
+            background: linear-gradient(135deg, #8d99af 0%, #8495b3 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+        
+        .btn-next:hover, .btn-prev:hover, .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(141, 153, 175, 0.3);
+        }
+        
+        .btn-prev {
+            background: #6c757d;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+        
+        .file-upload {
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: #8d99af;
+            background: #f8f9fa;
+        }
+        
+        .file-upload i {
+            font-size: 48px;
+            color: #8d99af;
+            margin-bottom: 15px;
+        }
+        
+        .vantagens-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .vantagens-box h4 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .vantagem-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .vantagem-item i {
+            color: #4CAF50;
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+        
+        .plano-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .plano-card:hover {
+            border-color: #8d99af;
+            transform: translateY(-5px);
+        }
+        
+        .plano-card.selected {
+            border-color: #4CAF50;
+            background: #f8fff8;
+        }
+        
+        .plano-preco {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+        }
+        
+        .plano-preco span {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .plano-gratuito {
+            border-color: #4CAF50;
+        }
+        
+        .requisito-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .requisito-item:last-child {
+            border-bottom: none;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        .categoria-tag {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .categoria-tag.selected {
+            background: #8d99af;
+            color: white;
+        }
+        
+        .uploaded-file {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+            <span class="dot"></span>
+            <div class="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Área do Cabeçalho Início ***** -->
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Início ***** -->
+                        <a href="index.html" class="name-site logo">Vitrine MEI</a>
+                        <!-- ***** Logo Fim ***** -->
+                        <!-- ***** Menu Início ***** -->
+                        <ul class="nav">
+                            <li><a href="index.html">Início</a></li>
+                            <li><a href="category.html">Categorias</a></li>
+                            <li><a href="listing.html">Profissionais</a></li>
+                            <li><a href="contact.html">Contato</a></li>
+                           <li>
+                                <div class="main-white-button"><a href="cadastro-mei.html"><i class="fa fa-user-plus"></i> Cadastrar MEI</a></div>
+                            </li>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu Fim ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Área do Cabeçalho Fim ***** -->
+
+    <!-- ***** Cabeçalho da Página ***** -->
+    <div class="cadastro-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12" style="margin-top: 50px;">
+                    <h1>Cadastre Seu MEI</h1>
+                    <p class="lead" style="color: #fff;">Aumente sua visibilidade e receba propostas de trabalho diariamente</p>
+                    <p style="color: #fff;">Cadastro 100% gratuito • Até 5x mais clientes • Perfil verificado</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Indicador de Passos -->
+        <div class="step-indicator">
+            <div class="step active" id="step1-indicator">
+                <div class="step-number">1</div>
+                <div class="step-text">Dados Pessoais</div>
+            </div>
+            <div class="step" id="step2-indicator">
+                <div class="step-number">2</div>
+                <div class="step-text">Informações Profissionais</div>
+            </div>
+            <div class="step" id="step3-indicator">
+                <div class="step-number">3</div>
+                <div class="step-text">Documentos</div>
+            </div>
+            <div class="step" id="step4-indicator">
+                <div class="step-number">4</div>
+                <div class="step-text">Plano</div>
+            </div>
+        </div>
+
+        <form id="cadastro-mei-form">
+            <!-- Passo 1: Dados Pessoais -->
+            <div class="form-section form-step active" id="step1">
+                <h3 class="mb-4">Dados Pessoais</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" for="nome">Nome Completo *</label>
+                            <input type="text" class="form-control" id="nome" name="nome" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" for="cpf">CPF *</label>
+                            <input type="text" class="form-control" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" for="email">E-mail *</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" for="telefone">Telefone/WhatsApp *</label>
+                            <input type="tel" class="form-control" id="telefone" name="telefone" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" for="cidade">Cidade *</label>
+                            <input type="text" class="form-control" id="cidade" name="cidade" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" for="estado">Estado *</label>
+                            <select class="form-control" id="estado" name="estado" required>
+                                <option value="">Selecione</option>
+                                <option value="AC">Acre</option>
+                                <option value="AL">Alagoas</option>
+                                <option value="AP">Amapá</option>
+                                <option value="AM">Amazonas</option>
+                                <option value="BA">Bahia</option>
+                                <option value="CE">Ceará</option>
+                                <option value="DF">Distrito Federal</option>
+                                <option value="ES">Espírito Santo</option>
+                                <option value="GO">Goiás</option>
+                                <option value="MA">Maranhão</option>
+                                <option value="MT">Mato Grosso</option>
+                                <option value="MS">Mato Grosso do Sul</option>
+                                <option value="MG">Minas Gerais</option>
+                                <option value="PA">Pará</option>
+                                <option value="PB">Paraíba</option>
+                                <option value="PR">Paraná</option>
+                                <option value="PE">Pernambuco</option>
+                                <option value="PI">Piauí</option>
+                                <option value="RJ">Rio de Janeiro</option>
+                                <option value="RN">Rio Grande do Norte</option>
+                                <option value="RS">Rio Grande do Sul</option>
+                                <option value="RO">Rondônia</option>
+                                <option value="RR">Roraima</option>
+                                <option value="SC">Santa Catarina</option>
+                                <option value="SP">São Paulo</option>
+                                <option value="SE">Sergipe</option>
+                                <option value="TO">Tocantins</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="termos" name="termos" required>
+                        <label for="termos">Li e aceito os <a href="termos.html" target="_blank">Termos de Uso</a> e <a href="privacidade.html" target="_blank">Política de Privacidade</a> *</label>
+                    </div>
+                </div>
+                
+                <div class="text-right">
+                    <button type="button" class="btn-next" onclick="nextStep(2)">Próximo <i class="fas fa-arrow-right ml-2"></i></button>
+                </div>
+            </div>
+
+            <!-- Passo 2: Informações Profissionais -->
+            <div class="form-section form-step" id="step2">
+                <h3 class="mb-4">Informações Profissionais</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Selecione suas Categorias *</label>
+                    <div class="categorias-container">
+                        <span class="categoria-tag" data-value="construcao">🏗️ Construção</span>
+                        <span class="categoria-tag" data-value="tecnologia">💻 Tecnologia</span>
+                        <span class="categoria-tag" data-value="design">🎨 Design</span>
+                        <span class="categoria-tag" data-value="consultoria">📊 Consultoria</span>
+                        <span class="categoria-tag" data-value="servicos">🔧 Serviços</span>
+                        <span class="categoria-tag" data-value="eletricista">⚡ Eletricista</span>
+                        <span class="categoria-tag" data-value="encanador">🔧 Encanador</span>
+                        <span class="categoria-tag" data-value="pintor">🎨 Pintor</span>
+                        <span class="categoria-tag" data-value="marceneiro">🪚 Marceneiro</span>
+                        <span class="categoria-tag" data-value="programador">👨‍💻 Programador</span>
+                        <span class="categoria-tag" data-value="designer">✏️ Designer</span>
+                        <span class="categoria-tag" data-value="fotografo">📸 Fotógrafo</span>
+                        <span class="categoria-tag" data-value="contador">📊 Contador</span>
+                    </div>
+                    <input type="hidden" id="categorias" name="categorias" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="cnpj">CNPJ MEI *</label>
+                    <input type="text" class="form-control" id="cnpj" name="cnpj" placeholder="00.000.000/0001-00" required>
+                    <small class="text-muted">Deve ser um CNPJ MEI ativo na Receita Federal</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="ramo-atividade">Ramo de Atividade (CNAE) *</label>
+                    <input type="text" class="form-control" id="ramo-atividade" name="ramo-atividade" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="descricao">Descrição dos Serviços *</label>
+                    <textarea class="form-control" id="descricao" name="descricao" rows="4" placeholder="Descreva os serviços que você oferece, sua experiência, especializações..." required></textarea>
+                    <small class="text-muted">Esta descrição aparecerá no seu perfil para os clientes</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="experiencia">Anos de Experiência</label>
+                    <select class="form-control" id="experiencia" name="experiencia">
+                        <option value="">Selecione</option>
+                        <option value="0-1">Menos de 1 ano</option>
+                        <option value="1-3">1 a 3 anos</option>
+                        <option value="3-5">3 a 5 anos</option>
+                        <option value="5-10">5 a 10 anos</option>
+                        <option value="10+">Mais de 10 anos</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="portfolio">Link do Portfólio (opcional)</label>
+                    <input type="url" class="form-control" id="portfolio" name="portfolio" placeholder="https://seusite.com ou link do LinkedIn">
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn-prev" onclick="prevStep(1)"><i class="fas fa-arrow-left mr-2"></i> Voltar</button>
+                    <button type="button" class="btn-next" onclick="nextStep(3)">Próximo <i class="fas fa-arrow-right ml-2"></i></button>
+                </div>
+            </div>
+
+            <!-- Passo 3: Documentos -->
+            <div class="form-section form-step" id="step3">
+                <h3 class="mb-4">Documentos para Verificação</h3>
+                <p class="text-muted mb-4">Para garantir a segurança e confiabilidade da nossa plataforma, precisamos verificar seus documentos. Todos os dados são protegidos e usados apenas para validação.</p>
+                
+                <div class="requisitos-box mb-4">
+                    <h5>Documentos Necessários:</h5>
+                    <div class="requisito-item">
+                        <i class="fas fa-check-circle text-success mr-2"></i> CNPJ MEI ativo
+                    </div>
+                    <div class="requisito-item">
+                        <i class="fas fa-check-circle text-success mr-2"></i> Documento com foto (RG ou CNH)
+                    </div>
+                    <div class="requisito-item">
+                        <i class="fas fa-check-circle text-success mr-2"></i> Comprovante de residência
+                    </div>
+                    <div class="requisito-item">
+                        <i class="fas fa-check-circle text-success mr-2"></i> Foto do rosto (para perfil)
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Documento de Identificação (RG ou CNH) *</label>
+                            <div class="file-upload" onclick="document.getElementById('file-doc').click()">
+                                <i class="fas fa-id-card"></i>
+                                <p>Clique para enviar foto ou PDF</p>
+                                <small>Apenas arquivos JPG, PNG ou PDF (máx. 5MB)</small>
+                            </div>
+                            <input type="file" id="file-doc" class="d-none" accept=".jpg,.jpeg,.png,.pdf">
+                            <div id="doc-uploaded" class="uploaded-file" style="display: none;">
+                                <span><i class="fas fa-file-alt mr-2"></i> <span id="doc-name"></span></span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFile('doc')">Remover</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Comprovante de Residência *</label>
+                            <div class="file-upload" onclick="document.getElementById('file-comprovante').click()">
+                                <i class="fas fa-home"></i>
+                                <p>Clique para enviar comprovante</p>
+                                <small>Conta de luz, água ou telefone (máx. 5MB)</small>
+                            </div>
+                            <input type="file" id="file-comprovante" class="d-none" accept=".jpg,.jpeg,.png,.pdf">
+                            <div id="comprovante-uploaded" class="uploaded-file" style="display: none;">
+                                <span><i class="fas fa-file-alt mr-2"></i> <span id="comprovante-name"></span></span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFile('comprovante')">Remover</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Foto para Perfil *</label>
+                            <div class="file-upload" onclick="document.getElementById('file-foto').click()">
+                                <i class="fas fa-camera"></i>
+                                <p>Clique para enviar sua foto</p>
+                                <small>Foto nítida do rosto (máx. 5MB)</small>
+                            </div>
+                            <input type="file" id="file-foto" class="d-none" accept=".jpg,.jpeg,.png">
+                            <div id="foto-uploaded" class="uploaded-file" style="display: none;">
+                                <span><i class="fas fa-file-image mr-2"></i> <span id="foto-name"></span></span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFile('foto')">Remover</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Comprovante de CNPJ (opcional)</label>
+                            <div class="file-upload" onclick="document.getElementById('file-cnpj').click()">
+                                <i class="fas fa-file-invoice"></i>
+                                <p>Clique para enviar comprovante</p>
+                                <small>Certificado ou extrato CNPJ (máx. 5MB)</small>
+                            </div>
+                            <input type="file" id="file-cnpj" class="d-none" accept=".jpg,.jpeg,.png,.pdf">
+                            <div id="cnpj-uploaded" class="uploaded-file" style="display: none;">
+                                <span><i class="fas fa-file-alt mr-2"></i> <span id="cnpj-name"></span></span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFile('cnpj')">Remover</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn-prev" onclick="prevStep(2)"><i class="fas fa-arrow-left mr-2"></i> Voltar</button>
+                    <button type="button" class="btn-next" onclick="nextStep(4)">Próximo <i class="fas fa-arrow-right ml-2"></i></button>
+                </div>
+            </div>
+
+            <!-- Passo 4: Plano -->
+            <div class="form-section form-step" id="step4">
+                <h3 class="mb-4">Escolha Seu Plano</h3>
+                <p class="text-muted mb-4">Comece gratuitamente e atualize quando quiser</p>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="plano-card plano-gratuito" onclick="selectPlano('gratuito')" id="plano-gratuito">
+                            <h4>Plano Básico</h4>
+                            <div class="plano-preco">GRÁTIS</div>
+                            <p>Ideal para começar</p>
+                            <div class="text-left my-4">
+                                <div class="vantagem-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Perfil na plataforma</span>
+                                </div>
+                                <div class="vantagem-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Até 5 propostas/mês</span>
+                                </div>
+                                <div class="vantagem-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Avaliações de clientes</span>
+                                </div>
+                                <div class="vantagem-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Verificação básica</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="plano-card" onclick="selectPlano('premium')" id="plano-premium">
+                            <h4>Plano Premium</h4>
+                            <div class="plano-preco">R$ 29,90 <span>/mês</span></div>
+                            <p>Para mais resultados</p>
+                            <div class="text-left my-4">
+                                <div class="vantagem-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Tudo do Plano Básico</span>
+                                </div>
+                                <div class="vantagem-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Propostas ilimitadas</span>
+                                </div>
+                                <div class="vantagem-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Destaque nas buscas</span>
+                                </div>
+                                <div class="vantagem-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Perfil verificado</span>
+                                </div>
+                                <div class="vantagem-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Suporte prioritário</span>
+                                </div>
+                                <div class="vantagem-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Estatísticas detalhadas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="plano" name="plano" value="gratuito" required>
+                
+                <div class="vantagens-box mt-4">
+                    <h4>Por que se cadastrar?</h4>
+                    <div class="vantagem-item">
+                        <i class="fas fa-bullseye"></i>
+                        <span><strong>Alcance mais clientes:</strong> Sua vitrine online 24 horas</span>
+                    </div>
+                    <div class="vantagem-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span><strong>Perfil verificado:</strong> Ganhe a confiança dos clientes</span>
+                    </div>
+                    <div class="vantagem-item">
+                        <i class="fas fa-star"></i>
+                        <span><strong>Avaliações reais:</strong> Mostre seu trabalho de qualidade</span>
+                    </div>
+                    <div class="vantagem-item">
+                        <i class="fas fa-bolt"></i>
+                        <span><strong>Rápido e fácil:</strong> Comece a receber propostas em 24h</span>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn-prev" onclick="prevStep(3)"><i class="fas fa-arrow-left mr-2"></i> Voltar</button>
+                    <button type="submit" class="btn-submit"><i class="fas fa-check mr-2"></i> Finalizar Cadastro</button>
+                </div>
+            </div>
+        </form>
+        
+        <div class="text-center mt-5">
+            <p>Já tem uma conta? <a href="login.html">Faça login aqui</a></p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h5>Vitrine MEI</h5>
+                    <p>Conectando profissionais MEI a clientes desde 2023. Seu projeto em boas mãos.</p>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Links Rápidos</h5>
+                    <ul class="footer-links">
+                        <li><a href="como-funciona.html">Como Funciona</a></li>
+                        <li><a href="cadastro-mei.html">Cadastrar MEI</a></li>
+                        <li><a href="termos.html">Termos de Uso</a></li>
+                        <li><a href="privacidade.html">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Contato</h5>
+                    <p>suporte@vitrinemei.com.br<br>(11) 99999-9999</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="sub-footer">
+                        <p>Copyright © 2023 Vitrine MEI - Todos os direitos reservados</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/animation.js"></script>
+    <script src="assets/js/imagesloaded.js"></script>
+    <script src="assets/js/custom.js"></script>
+    
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+        
+        function updateStepIndicator(step) {
+            // Atualiza todos os indicadores
+            for (let i = 1; i <= totalSteps; i++) {
+                const indicator = document.getElementById(`step${i}-indicator`);
+                if (i <= step) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            }
+        }
+        
+        function nextStep(next) {
+            // Valida o passo atual antes de avançar
+            if (validateStep(currentStep)) {
+                // Esconde passo atual
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                // Mostra próximo passo
+                document.getElementById(`step${next}`).classList.add('active');
+                currentStep = next;
+                updateStepIndicator(currentStep);
+                
+                // Scroll para topo do formulário
+                document.querySelector('.form-section.active').scrollIntoView({behavior: 'smooth'});
+            }
+        }
+        
+        function prevStep(prev) {
+            // Esconde passo atual
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            // Mostra passo anterior
+            document.getElementById(`step${prev}`).classList.add('active');
+            currentStep = prev;
+            updateStepIndicator(currentStep);
+            
+            // Scroll para topo do formulário
+            document.querySelector('.form-section.active').scrollIntoView({behavior: 'smooth'});
+        }
+        
+        function validateStep(step) {
+            let isValid = true;
+            
+            if (step === 1) {
+                const campos = ['nome', 'email', 'telefone', 'cidade', 'estado'];
+                campos.forEach(campo => {
+                    const input = document.getElementById(campo);
+                    if (!input.value.trim()) {
+                        input.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        input.classList.remove('is-invalid');
+                    }
+                });
+                
+                if (!document.getElementById('termos').checked) {
+                    alert('Você deve aceitar os Termos de Uso para continuar.');
+                    isValid = false;
+                }
+            }
+            
+            if (step === 2) {
+                const campos = ['cnpj', 'ramo-atividade', 'descricao'];
+                campos.forEach(campo => {
+                    const input = document.getElementById(campo);
+                    if (!input.value.trim()) {
+                        input.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        input.classList.remove('is-invalid');
+                    }
+                });
+                
+                // Verifica se selecionou pelo menos uma categoria
+                const categoriasSelecionadas = document.querySelectorAll('.categoria-tag.selected');
+                if (categoriasSelecionadas.length === 0) {
+                    alert('Selecione pelo menos uma categoria de serviços.');
+                    isValid = false;
+                }
+            }
+            
+            if (!isValid) {
+                alert('Por favor, preencha todos os campos obrigatórios corretamente.');
+            }
+            
+            return isValid;
+        }
+        
+        // Categorias - seleção múltipla
+        document.querySelectorAll('.categoria-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                updateCategoriasInput();
+            });
+        });
+        
+        function updateCategoriasInput() {
+            const selected = document.querySelectorAll('.categoria-tag.selected');
+            const categorias = Array.from(selected).map(tag => tag.getAttribute('data-value'));
+            document.getElementById('categorias').value = categorias.join(',');
+        }
+        
+        // Upload de arquivos
+        document.getElementById('file-doc').addEventListener('change', function(e) {
+            handleFileUpload(e, 'doc');
+        });
+        
+        document.getElementById('file-comprovante').addEventListener('change', function(e) {
+            handleFileUpload(e, 'comprovante');
+        });
+        
+        document.getElementById('file-foto').addEventListener('change', function(e) {
+            handleFileUpload(e, 'foto');
+        });
+        
+        document.getElementById('file-cnpj').addEventListener('change', function(e) {
+            handleFileUpload(e, 'cnpj');
+        });
+        
+        function handleFileUpload(event, type) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) { // 5MB
+                    alert('O arquivo é muito grande. Tamanho máximo: 5MB');
+                    return;
+                }
+                
+                const container = document.getElementById(`${type}-uploaded`);
+                const nameSpan = document.getElementById(`${type}-name`);
+                
+                nameSpan.textContent = file.name;
+                container.style.display = 'flex';
+            }
+        }
+        
+        function removeFile(type) {
+            const input = document.getElementById(`file-${type}`);
+            const container = document.getElementById(`${type}-uploaded`);
+            
+            input.value = '';
+            container.style.display = 'none';
+        }
+        
+        // Seleção de plano
+        function selectPlano(plano) {
+            document.querySelectorAll('.plano-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            document.getElementById(`plano-${plano}`).classList.add('selected');
+            document.getElementById('plano').value = plano;
+        }
+        
+        // Máscaras de input
+        document.getElementById('cpf').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.substring(0, 11);
+            
+            if (value.length > 9) {
+                value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{2}).*/, '$1.$2.$3-$4');
+            } else if (value.length > 6) {
+                value = value.replace(/^(\d{3})(\d{3})(\d{1,3}).*/, '$1.$2.$3');
+            } else if (value.length > 3) {
+                value = value.replace(/^(\d{3})(\d{1,3}).*/, '$1.$2');
+            }
+            
+            e.target.value = value;
+        });
+        
+        document.getElementById('cnpj').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 14) value = value.substring(0, 14);
+            
+            if (value.length > 12) {
+                value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2}).*/, '$1.$2.$3/$4-$5');
+            } else if (value.length > 8) {
+                value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{1,4}).*/, '$1.$2.$3/$4');
+            } else if (value.length > 5) {
+                value = value.replace(/^(\d{2})(\d{3})(\d{1,3}).*/, '$1.$2.$3');
+            } else if (value.length > 2) {
+                value = value.replace(/^(\d{2})(\d{1,3}).*/, '$1.$2');
+            }
+            
+            e.target.value = value;
+        });
+        
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.substring(0, 11);
+            
+            if (value.length > 10) {
+                value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+            } else if (value.length > 6) {
+                value = value.replace(/^(\d{2})(\d{4})(\d{1,4}).*/, '($1) $2-$3');
+            } else if (value.length > 2) {
+                value = value.replace(/^(\d{2})(\d{1,4}).*/, '($1) $2');
+            } else if (value.length > 0) {
+                value = value.replace(/^(\d{1,2}).*/, '($1');
+            }
+            
+            e.target.value = value;
+        });
+        
+        // Envio do formulário
+        document.getElementById('cadastro-mei-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (validateStep(currentStep)) {
+                // Aqui você enviaria os dados para o servidor
+                // Por enquanto, apenas mostramos uma mensagem de sucesso
+                
+                const nome = document.getElementById('nome').value;
+                const plano = document.getElementById('plano').value;
+                const planoText = plano === 'gratuito' ? 'Básico (Gratuito)' : 'Premium (R$ 29,90/mês)';
+                
+                const mensagem = `
+                    ✅ Cadastro realizado com sucesso!
+                    
+                    Olá ${nome},
+                    
+                    Seu cadastro como MEI na Vitrine MEI foi realizado com sucesso!
+                    Plano selecionado: ${planoText}
+                    
+                    Nossa equipe irá verificar seus documentos em até 24 horas.
+                    Você receberá um e-mail assim que seu perfil estiver ativo.
+                    
+                    Obrigado por escolher a Vitrine MEI!
+                `;
+                
+                alert(mensagem);
+                
+                window.location.href = 'cadastro-sucesso.html';
+            }
+        });
+        
+        selectPlano('gratuito');
+    </script>
+
+</body>
+
+</html>
