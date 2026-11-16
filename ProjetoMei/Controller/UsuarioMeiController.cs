@@ -1,81 +1,161 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
-using Microsoft.EntityFrameworkCore;
-using ProjetoMei.Data;
 using ProjetoMei.DataModel;
 using ProjetoMei.Interfaces;
 using ProjetoMei.Model;
 
-namespace ProjetoMei.Controller
+namespace ProjetoMei.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class UsuarioMeiController : ControllerBase
     {
-        public readonly IUsuarioMeiService usuarioMeiService;
-        public UsuarioMeiController(IUsuarioMeiService _usuarioMeiService)
+        private readonly IUsuarioMeiService _usuarioMeiService;
+
+        public UsuarioMeiController(IUsuarioMeiService usuarioMeiService)
         {
-            usuarioMeiService = _usuarioMeiService;
+            _usuarioMeiService = usuarioMeiService;
         }
 
-        
-        [HttpPost("Adicionar Usuario")]
-        public async Task<IActionResult> AdicionarUsuario(UsuarioMeiDataModel usuarioMeiDataModel)
+        // POST api/UsuarioMei
+        [HttpPost]
+        [ProducesResponseType(typeof(UsuarioMeiModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public ActionResult<UsuarioMeiModel> AdicionarUsuario([FromBody] UsuarioMeiDataModel usuarioMeiDataModel)
         {
-            UsuarioMeiModel usuarioMeiModel = usuarioMeiService.Adicionar(usuarioMeiDataModel);
+            // O Id é sempre gerado pelo banco; ignora qualquer valor enviado pelo cliente.
+            usuarioMeiDataModel.Id = 0;
 
-            return Ok(usuarioMeiModel);
+            try
+            {
+                UsuarioMeiModel usuarioMeiModel = _usuarioMeiService.Adicionar(usuarioMeiDataModel);
+
+                return CreatedAtAction(
+                    nameof(BuscarUsuarioPorId),
+                    new { id = usuarioMeiModel.Id },
+                    usuarioMeiModel);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { mensagem = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { mensagem = ex.Message });
+            }
         }
 
-
-        [HttpGet("Buscar Usuarios")]
-        public async Task<ActionResult<IEnumerable<UsuarioMeiModel>>> BuscarUsuarios()
+        // GET api/UsuarioMei/vitrine  (dados públicos, sem CPF/CNPJ/e-mail/telefone)
+        [HttpGet("vitrine")]
+        [ProducesResponseType(typeof(IEnumerable<UsuarioMeiVitrineModel>), StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<UsuarioMeiVitrineModel>> BuscarVitrine()
         {
-            List<UsuarioMeiModel> usuarioMeiModels = usuarioMeiService.BuscarUsuarios();
+            return Ok(_usuarioMeiService.BuscarVitrine());
+        }
+
+        // GET api/UsuarioMei
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<UsuarioMeiModel>), StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<UsuarioMeiModel>> BuscarUsuarios()
+        {
+            List<UsuarioMeiModel> usuarioMeiModels = _usuarioMeiService.BuscarUsuarios();
 
             return Ok(usuarioMeiModels);
         }
 
-        
-        [HttpGet("Busca Por Id")]
-        public async Task<IActionResult> BuscarUsuarioPorId (int Id)
+        // GET api/UsuarioMei/5
+        [HttpGet("{id:int:min(1)}")]
+        [ProducesResponseType(typeof(UsuarioMeiModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<UsuarioMeiModel> BuscarUsuarioPorId(int id)
         {
-            UsuarioMeiModel usuarioMeiModel = usuarioMeiService.BuscarUsuarioPorId(Id);
+            try
+            {
+                UsuarioMeiModel usuarioMeiModel = _usuarioMeiService.BuscarUsuarioPorId(id);
 
-            return Ok(usuarioMeiModel);
+                return Ok(usuarioMeiModel);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(new { mensagem = "Usuário não encontrado." });
+            }
         }
 
-        
-        [HttpGet("Busca Por Nome")]
-        public async Task<IActionResult> BuscarUsuarioPorNome (string nome)
+        // GET api/UsuarioMei/nome/joao
+        [HttpGet("nome/{nome}")]
+        [ProducesResponseType(typeof(UsuarioMeiModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<UsuarioMeiModel> BuscarUsuarioPorNome(string nome)
         {
-            UsuarioMeiModel usuarioMeiModel = usuarioMeiService.BuscarUsuarioPorNome(nome);
+            if (string.IsNullOrWhiteSpace(nome))
+            {
+                return BadRequest(new { mensagem = "Informe o nome para a busca." });
+            }
 
-            return Ok(usuarioMeiModel);
+            try
+            {
+                UsuarioMeiModel usuarioMeiModel = _usuarioMeiService.BuscarUsuarioPorNome(nome);
+
+                return Ok(usuarioMeiModel);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(new { mensagem = "Usuário não encontrado." });
+            }
         }
 
-        
-
-
-        [HttpPut("Atualizar")]
-        public IActionResult Atualizar(UsuarioMeiDataModel usuarioMeiDataModel, int Id) 
-        { 
-            usuarioMeiDataModel.Id = Id;
-            UsuarioMeiModel usuarioMeiModel = usuarioMeiService.Atualizar(usuarioMeiDataModel, Id);
-
-            return Ok(usuarioMeiDataModel);
-        }
-
-        [HttpDelete("Id")]
-        public bool DeletarPorID(int Id)
+        // PUT api/UsuarioMei/5
+        [HttpPut("{id:int:min(1)}")]
+        [ProducesResponseType(typeof(UsuarioMeiModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<UsuarioMeiModel> Atualizar(int id, [FromBody] UsuarioMeiDataModel usuarioMeiDataModel)
         {
-            return usuarioMeiService.Deletar(Id);
+            // O Id válido é o da rota, não o do corpo da requisição.
+            usuarioMeiDataModel.Id = id;
+
+            try
+            {
+                UsuarioMeiModel usuarioMeiModel = _usuarioMeiService.Atualizar(usuarioMeiDataModel, id);
+
+                return Ok(usuarioMeiModel);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(new { mensagem = "Usuário não encontrado." });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { mensagem = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { mensagem = ex.Message });
+            }
         }
 
+        // DELETE api/UsuarioMei/5
+        [HttpDelete("{id:int:min(1)}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult DeletarPorID(int id)
+        {
+            try
+            {
+                bool deletado = _usuarioMeiService.Deletar(id);
 
+                if (!deletado)
+                {
+                    return NotFound(new { mensagem = "Usuário não encontrado." });
+                }
+
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(new { mensagem = "Usuário não encontrado." });
+            }
+        }
     }
 }

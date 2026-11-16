@@ -2,7 +2,7 @@
 /** Tela de login: só é aberta ao clicar em "Login" no header. */
 $tituloPagina  = 'Login';
 $paginaAtiva   = 'login';
-$scriptsExtras = ['login.js'];
+$scriptsExtras = ['Login.js'];
 require_once __DIR__ . '/../routes/config.php';
 require VIEW_PATH . '/components/layout/header.php';
 ?>

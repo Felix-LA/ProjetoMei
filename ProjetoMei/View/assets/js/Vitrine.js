@@ -1,5 +1,5 @@
 /**
- * vitrine.js — comportamentos da página principal (sem jQuery):
+ * Vitrine.js — comportamentos da página principal (sem jQuery):
  *  1. menu do celular
  *  2. abas das categorias em destaque
  *  3. carrossel dos profissionais

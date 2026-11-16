@@ -1,7 +1,7 @@
 /* =====================================================================
-   vitrine.css — estilo da página principal da Vitrine MEI
+   Vitrine.css — estilo da página principal da Vitrine MEI
    Tema: tons claros em azul e branco; azul forte só para destacar.
-   (Bootstrap e Font Awesome são carregados por CDN em components/layout/topo.php)
+   (Bootstrap e Font Awesome são carregados por CDN em components/layout/Topo.php)
    ===================================================================== */
 
 /* ===== Variáveis ===== */
@@ -121,6 +121,17 @@ section { scroll-margin-top: 80px; }
 }
 .categories a:hover { background: #fff; color: var(--azul-900); }
 
+/* ===== Cabeçalho das páginas internas (Categoria, Listagem) ===== */
+.page-heading {
+    background: linear-gradient(135deg, var(--azul-900) 0%, var(--azul-600) 100%);
+    color: #fff;
+    padding: 56px 0 48px;
+    margin-bottom: 40px;
+}
+.page-heading .top-text { text-align: left; margin-bottom: 0; }
+.page-heading .top-text h2 { margin: 0 0 14px; max-width: none; }
+.page-heading .top-text p { margin: 0; color: #e3eefc; }
+
 /* ===== Estatísticas ===== */
 .estatisticas { margin-top: 40px; }
 
@@ -219,6 +230,21 @@ section { scroll-margin-top: 80px; }
 .right-content { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
 .right-content h4 { font-size: 1.1rem; font-weight: 700; color: var(--azul-900); margin: 0; }
 .right-content h6 { color: var(--texto-suave); font-weight: 500; margin: 2px 0 10px; }
+
+/* ----- Card de MEI vindo da API (sem foto: avatar com iniciais) ----- */
+.mei-avatar {
+    height: 150px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--azul-900) 0%, var(--azul-600) 100%);
+    color: #fff; font-size: 3rem; font-weight: 800; letter-spacing: .04em;
+}
+.mei-descricao { color: var(--texto-suave); font-size: .92rem; margin: 0 0 10px; }
+.right-content .main-white-button { margin-top: auto; }
+.vitrine-vazia {
+    text-align: center; padding: 40px 20px; background: #fff; border: 1px dashed var(--azul-200);
+    border-radius: var(--raio); color: var(--texto-suave);
+}
+.vitrine-vazia i { font-size: 2rem; color: var(--azul-600); margin-bottom: 10px; display: block; }
+.vitrine-vazia .main-white-button { display: inline-block; margin-top: 12px; }
 
 .verificado {
     color: #1E88E5;

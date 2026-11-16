@@ -1,0 +1,160 @@
+/* =====================================================================
+   Contato.css — estilos exclusivos da página Contato.php
+   ===================================================================== */
+
+/* ===== Cabeçalho ===== */
+.contact-header {
+    background: linear-gradient(rgba(11, 61, 145, 0.82), rgba(11, 61, 145, 0.82)),
+                url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&h=400&q=80');
+    background-size: cover;
+    background-position: center;
+    padding: 100px 0;
+    color: white;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.contact-header h1 { font-weight: 800; font-size: clamp(1.8rem, 4vw, 2.6rem); }
+.contact-header .lead { color: #fff; max-width: 680px; margin: 0 auto; }
+
+/* ===== Cartões de informação ===== */
+.contact-info-card {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    border: 1px solid var(--azul-200);
+    box-shadow: 0 5px 15px rgba(11, 61, 145, 0.08);
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.contact-info-card:hover { transform: translateY(-5px); }
+.contact-info-card h4 { color: var(--azul-900); font-weight: 700; }
+.contact-info-card h5 { color: var(--azul-600); font-weight: 700; }
+.contact-info-card h6 { color: var(--azul-900); font-weight: 700; }
+
+.contact-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--azul-700) 0%, var(--azul-600) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.contact-icon i { color: white; font-size: 24px; }
+
+/* ===== Formulário ===== */
+.contact-form {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    border: 1px solid var(--azul-200);
+    box-shadow: 0 5px 15px rgba(11, 61, 145, 0.08);
+}
+
+.contact-form h3 { color: var(--azul-900); font-weight: 700; }
+
+.contact-form .form-control {
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+}
+
+.contact-form .form-control:focus {
+    border-color: var(--azul-600);
+    box-shadow: 0 0 0 0.2rem rgba(47, 125, 225, 0.25);
+}
+
+.contact-form .form-control.is-invalid { border-color: #d1343a; }
+
+.submit-button {
+    background: linear-gradient(135deg, var(--azul-700) 0%, var(--azul-600) 100%);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(47, 125, 225, 0.35);
+}
+
+/* ===== Redes sociais ===== */
+.social-contact {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.social-contact a {
+    width: 50px;
+    height: 50px;
+    background: var(--azul-100);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--azul-900);
+    transition: all 0.3s;
+}
+
+.social-contact a:hover {
+    background: var(--azul-600);
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* ===== Perguntas frequentes ===== */
+.faq-section { margin-top: 80px; margin-bottom: 64px; }
+
+.faq-item {
+    margin-bottom: 20px;
+    border: 1px solid var(--azul-200);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.faq-question {
+    width: 100%;
+    padding: 20px;
+    background: var(--azul-100);
+    border: 0;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--texto);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.faq-question i { transition: transform .2s; }
+
+.faq-answer {
+    padding: 20px;
+    display: none;
+    color: var(--texto-suave);
+}
+
+.faq-answer p { margin: 0; }
+
+.faq-question.active { background: var(--azul-900); color: white; }
+.faq-question.active i { transform: rotate(180deg); }
+
+@media (max-width: 575.98px) {
+    .contact-header { padding: 64px 0; margin-bottom: 40px; }
+    .contact-form { padding: 24px; }
+}

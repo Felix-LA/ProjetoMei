@@ -9,21 +9,22 @@
  */
 return [
     // ---- Vitrine ----
-    'inicio'         => '/pages/inicio.php',
-    'categorias'     => '/pages/categorias.php',      // A CRIAR
-    'profissionais'  => '/pages/profissionais.php',   // A CRIAR
-    'contato'        => '/pages/contato.php',         // A CRIAR
-    'cadastro-mei'   => '/pages/cadastro-mei.php',    // A CRIAR
-    'como-funciona'  => '/pages/como-funciona.php',   // A CRIAR
-    'termos'         => '/pages/termos.php',          // A CRIAR
-    'privacidade'    => '/pages/privacidade.php',     // A CRIAR
+    'inicio'         => '/pages/Inicio.php',
+    'categorias'     => '/pages/Categoria.php',
+    'profissionais'  => '/pages/Listagem.php',
+    'contato'        => '/pages/Contato.php',
+    'cadastro-mei'   => '/pages/CadastroMei.php',
+    'cadastro-mei.salvar' => '/pages/CadastroMeiSalvar.php',
+    'como-funciona'  => '/pages/ComoFunciona.php',   // A CRIAR
+    'termos'         => '/pages/Termos.php',          // A CRIAR
+    'privacidade'    => '/pages/Privacidade.php',     // A CRIAR
 
     // ---- Login ----
-    'login'          => '/pages/login.php',
-    'autenticar'     => '/pages/autenticar.php',
+    'login'          => '/pages/Login.php',
+    'autenticar'     => '/pages/Autenticar.php',
 
     // ---- Usuários ----
-    'usuarios'        => '/pages/usuario/listar.php',
-    'usuario.salvar'  => '/pages/usuario/salvar.php',
-    'usuario.excluir' => '/pages/usuario/excluir.php',
+    'usuarios'        => '/pages/usuario/Listar.php',
+    'usuario.salvar'  => '/pages/usuario/Salvar.php',
+    'usuario.excluir' => '/pages/usuario/Excluir.php',
 ];

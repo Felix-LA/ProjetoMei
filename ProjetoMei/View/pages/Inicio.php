@@ -2,18 +2,23 @@
 /** Página principal da Vitrine MEI. */
 $tituloPagina = 'Vitrine MEI - Conectando Profissionais a Clientes';
 $paginaAtiva  = 'inicio';
-require_once __DIR__ . '/../routes/config.php';
-require VIEW_PATH . '/components/layout/topo.php';
+require_once __DIR__ . '/../routes/Config.php';
+require VIEW_PATH . '/components/layout/Topo.php';
 
-$categorias    = require __DIR__ . '/dados/categorias.php';
-$profissionais = require __DIR__ . '/dados/profissionais.php';
-$slides        = array_chunk($profissionais, 3); // cada slide do carrossel mostra 3 profissionais
+$categorias    = require __DIR__ . '/dados/Categorias.php';
+$vitrine       = vitrine_buscar();                                        // MEIs cadastrados na API
+$slides        = array_chunk(array_slice($vitrine['itens'], 0, 9), 3);    // até 9 destaques, 3 por slide
 
+// Números reais, calculados a partir dos MEIs cadastrados na API.
+$total      = count($vitrine['itens']);
+$cidades    = count(array_unique(array_filter(array_column($vitrine['itens'], 'local'))));
+$categoriasUso = count(array_unique(array_merge([], ...array_column($vitrine['itens'], 'chaves'))));
+$premium    = count(array_filter($vitrine['itens'], fn ($m) => $m['premium']));
 $estatisticas = [
-    ['5.000+',  'MEIs Cadastrados'],
-    ['15.000+', 'Projetos Concluídos'],
-    ['4.8',     'Avaliação Média'],
-    ['98%',     'Clientes Satisfeitos'],
+    [(string) $total,         'MEIs Cadastrados'],
+    [(string) $categoriasUso, 'Categorias Atendidas'],
+    [(string) $cidades,       'Cidades'],
+    [(string) $premium,       'MEIs Premium'],
 ];
 
 $vantagens = [
@@ -29,7 +34,7 @@ $vantagens = [
         <div class="row">
             <div class="col-lg-12">
                 <div class="top-text header-text">
-                    <h6>Mais de 5.000+ Profissionais MEI Cadastrados</h6>
+                    <h6><?= $total > 0 ? h($total) . ($total === 1 ? ' Profissional MEI Cadastrado' : ' Profissionais MEI Cadastrados') : 'Cadastre seu MEI e apareça na vitrine' ?></h6>
                     <h2>Encontre os Melhores Profissionais para Seu Projeto</h2>
                     <p>De marceneiros a programadores, designers a eletricistas - tudo em um só lugar!</p>
                 </div>
@@ -139,6 +144,18 @@ $vantagens = [
             <h6>Conheça alguns dos nossos MEIs mais bem avaliados</h6>
         </div>
 
+        <?php if (!$vitrine['ok']): ?>
+            <div class="vitrine-vazia">
+                <i class="fa-solid fa-plug-circle-xmark"></i>
+                <p class="mb-0">Não foi possível carregar os profissionais agora. Tente novamente em instantes.</p>
+            </div>
+        <?php elseif (!$slides): ?>
+            <div class="vitrine-vazia">
+                <i class="fa-solid fa-user-plus"></i>
+                <p class="mb-0">Ainda não há MEIs cadastrados. Seja o primeiro a aparecer na vitrine!</p>
+                <div class="main-white-button"><a href="<?= h(rota('cadastro-mei')) ?>">Cadastrar meu MEI</a></div>
+            </div>
+        <?php else: ?>
         <div class="carrossel" data-carrossel>
             <div class="carrossel__janela">
                 <div class="carrossel__trilho" data-carrossel-trilho>
@@ -147,7 +164,7 @@ $vantagens = [
                             <div class="row g-4">
                                 <?php foreach ($slide as $p): ?>
                                     <div class="col-lg-4 col-md-6">
-                                        <?php require VIEW_PATH . '/components/cards/card-profissional.php'; ?>
+                                        <?php require __DIR__ . '/CardProfissional.php'; ?>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -164,6 +181,7 @@ $vantagens = [
                 </div>
             <?php endif; ?>
         </div>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -185,4 +203,4 @@ $vantagens = [
     </div>
 </section>
 
-<?php require VIEW_PATH . '/components/layout/rodape.php'; ?>
+<?php require VIEW_PATH . '/components/layout/Rodape.php'; ?>

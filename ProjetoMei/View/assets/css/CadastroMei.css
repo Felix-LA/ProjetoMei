@@ -1,0 +1,231 @@
+/* =====================================================================
+   CadastroMei.css — estilos exclusivos da página CadastroMei.php
+   ===================================================================== */
+
+/* ===== Cabeçalho ===== */
+.cadastro-header {
+    background: linear-gradient(rgba(11, 61, 145, 0.88), rgba(47, 125, 225, 0.82)),
+                url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&h=500&q=80');
+    background-size: cover;
+    background-position: center;
+    padding: 80px 0;
+    color: white;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.cadastro-header h1 { font-weight: 800; font-size: clamp(1.8rem, 4vw, 2.6rem); }
+.cadastro-header .lead,
+.cadastro-header p { color: #fff; }
+
+/* ===== Cartão de cada passo ===== */
+.form-section {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid var(--azul-200);
+    box-shadow: 0 5px 20px rgba(11, 61, 145, 0.08);
+    padding: 40px;
+    margin-bottom: 30px;
+}
+
+.form-section h3 { color: var(--azul-900); font-weight: 700; }
+
+.form-step { display: none; }
+.form-step.active { display: block; }
+
+/* ===== Indicador de passos ===== */
+.step-indicator {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 0;
+    margin-bottom: 40px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    margin: 0 20px;
+    opacity: 0.5;
+    transition: all 0.3s;
+}
+
+.step.active { opacity: 1; }
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background: var(--azul-600);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.step.active .step-number { background: #4CAF50; }
+.step-text { font-weight: 600; font-size: .92rem; }
+
+/* ===== Campos ===== */
+.form-group { margin-bottom: 25px; }
+
+.form-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--texto);
+}
+
+.cadastro .form-control {
+    border: 2px solid var(--borda);
+    border-radius: 8px;
+    padding: 12px 15px;
+    transition: all 0.3s;
+}
+
+.cadastro .form-control:focus {
+    border-color: var(--azul-600);
+    box-shadow: 0 0 0 0.2rem rgba(47, 125, 225, 0.25);
+}
+
+.checkbox-group { display: flex; align-items: flex-start; margin-bottom: 15px; }
+.checkbox-group input { margin-right: 10px; margin-top: 5px; }
+
+/* ===== Botões ===== */
+.btn-next, .btn-prev, .btn-submit {
+    background: linear-gradient(135deg, var(--azul-700) 0%, var(--azul-600) 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+    margin-right: 10px;
+}
+
+.btn-next:hover, .btn-prev:hover, .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(47, 125, 225, 0.35);
+    color: white;
+}
+
+.btn-prev { background: #6c757d; }
+.btn-submit { background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); margin-right: 0; }
+.d-flex > .btn-next { margin-right: 0; }
+
+/* ===== Categorias (seleção múltipla) ===== */
+.categoria-tag {
+    display: inline-block;
+    background: #f0f0f0;
+    border: 0;
+    font: inherit;
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.categoria-tag:hover { background: var(--azul-200); }
+.categoria-tag.selected { background: var(--azul-600); color: white; }
+
+/* ===== Documentos ===== */
+.requisito-item { padding: 10px 0; border-bottom: 1px solid var(--borda); }
+.requisito-item:last-child { border-bottom: none; }
+
+.file-upload {
+    border: 2px dashed var(--borda);
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.file-upload:hover,
+.file-upload:focus-visible { border-color: var(--azul-600); background: var(--azul-100); outline: 0; }
+.file-upload.is-invalid { border-color: #d1343a; }
+
+.file-upload i {
+    font-size: 48px;
+    color: var(--azul-600);
+    margin-bottom: 15px;
+}
+
+.file-upload p { margin-bottom: 4px; }
+.file-upload small { color: var(--texto-suave); }
+
+.uploaded-file {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--azul-100);
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.uploaded-file.d-none { display: none !important; }
+
+/* ===== Planos ===== */
+.plano-card {
+    border: 2px solid var(--borda);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: pointer;
+    height: 100%;
+    background: #fff;
+}
+
+.plano-card:hover,
+.plano-card:focus-visible { border-color: var(--azul-600); transform: translateY(-5px); outline: 0; }
+.plano-card.selected { border-color: #4CAF50; background: #f8fff8; }
+.plano-gratuito { border-color: #4CAF50; }
+.plano-card h4 { color: var(--azul-900); font-weight: 700; }
+
+.plano-preco {
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--texto);
+    margin: 20px 0;
+}
+
+.plano-preco span { font-size: 16px; color: var(--texto-suave); font-weight: 400; }
+
+/* ===== Vantagens ===== */
+.vantagens-box {
+    background: var(--azul-100);
+    border-radius: 10px;
+    padding: 30px;
+    margin-top: 30px;
+}
+
+.vantagens-box h4 { color: var(--azul-900); margin-bottom: 20px; font-weight: 700; }
+
+.vantagem-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.vantagem-item i {
+    color: #4CAF50;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+.vantagens-box .vantagem-item i { color: var(--azul-600); }
+
+/* ===== Sucesso ===== */
+.sucesso-icone { font-size: 64px; color: #4CAF50; margin-bottom: 12px; }
+
+@media (max-width: 767.98px) {
+    .form-section { padding: 24px; }
+    .step { margin: 0 10px; }
+    .step-text { display: none; }
+    .step.active .step-text { display: block; }
+}

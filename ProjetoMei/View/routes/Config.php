@@ -21,7 +21,7 @@ define('ASSETS_URL', BASE_URL . '/assets');
 define('VIEW_PATH', dirname(__DIR__));
 
 // Mapa de rotas (nome => arquivo dentro de View).
-$GLOBALS['ROTAS'] = require __DIR__ . '/rotas.php';
+$GLOBALS['ROTAS'] = require __DIR__ . '/Rotas.php';
 
 /**
  * Faz uma requisição para a API.
@@ -63,6 +63,82 @@ function api(string $metodo, string $caminho = '', ?array $corpo = null): array
 }
 
 /** Escapa texto para exibir em HTML. */
+/**
+ * Extrai uma mensagem legível de uma resposta de erro da API:
+ * { "mensagem": "..." } (nossos 400/404/409) ou ProblemDetails com "errors" (validação automática).
+ */
+function api_mensagem(array $resp): string
+{
+    $d = $resp['dados'] ?? null;
+    if (is_array($d)) {
+        if (!empty($d['mensagem']) && is_string($d['mensagem'])) {
+            return $d['mensagem'];
+        }
+        if (!empty($d['errors']) && is_array($d['errors'])) {
+            $msgs = [];
+            foreach ($d['errors'] as $lista) {
+                foreach ((array) $lista as $m) {
+                    $msgs[] = (string) $m;
+                }
+            }
+            if ($msgs) {
+                return implode(' ', array_unique($msgs));
+            }
+        }
+    }
+    return $resp['erro'] ?? 'Erro inesperado ao falar com a API.';
+}
+
+/**
+ * Busca os MEIs da vitrine na API (GET /vitrine) e já deixa cada um no formato do card.
+ * Retorna ['ok' => bool, 'itens' => array, 'erro' => ?string].
+ */
+function vitrine_buscar(): array
+{
+    $resp = api('GET', '/vitrine');
+
+    if ($resp['erro'] !== null || !is_array($resp['dados'])) {
+        return ['ok' => false, 'itens' => [], 'erro' => $resp['erro'] ?? 'Resposta inválida da API.'];
+    }
+
+    static $rotulos = null;
+    if ($rotulos === null) {
+        $rotulos = [];
+        foreach ((require __DIR__ . '/../pages/dados/CadastroMei.php')['categorias'] as [$chave, $rotulo]) {
+            // Tira o emoji do começo: "⚡ Eletricista" -> "Eletricista"
+            $rotulos[$chave] = preg_replace('/^[^\p{L}]+/u', '', $rotulo);
+        }
+    }
+
+    $exp = ['0-1' => 'Menos de 1 ano', '1-3' => '1 a 3 anos', '3-5' => '3 a 5 anos',
+            '5-10' => '5 a 10 anos', '10+' => 'Mais de 10 anos'];
+
+    $itens = [];
+    foreach ($resp['dados'] as $m) {
+        $chaves = $m['categorias'] ?? [];
+        $nome   = trim((string) ($m['nome'] ?? ''));
+        $partes = preg_split('/\s+/u', $nome, -1, PREG_SPLIT_NO_EMPTY) ?: ['?'];
+        $inicial = mb_strtoupper(mb_substr($partes[0], 0, 1))
+                 . (count($partes) > 1 ? mb_strtoupper(mb_substr(end($partes), 0, 1)) : '');
+
+        $itens[] = [
+            'id'          => (int) ($m['id'] ?? 0),
+            'nome'        => $nome,
+            'iniciais'    => $inicial,
+            'ramo'        => (string) ($m['ramoAtividade'] ?? ''),
+            'descricao'   => (string) ($m['descricao'] ?? ''),
+            'local'       => trim(($m['cidade'] ?? '') . (empty($m['estado']) ? '' : ' - ' . $m['estado'])),
+            'experiencia' => $exp[$m['experiencia'] ?? ''] ?? '',
+            'portfolio'   => (string) ($m['portfolio'] ?? ''),
+            'premium'     => ($m['plano'] ?? '') === 'premium',
+            'chaves'      => $chaves,
+            'tags'        => array_map(fn ($c) => $rotulos[$c] ?? ucfirst($c), $chaves),
+        ];
+    }
+
+    return ['ok' => true, 'itens' => $itens, 'erro' => null];
+}
+
 function h($valor): string
 {
     return htmlspecialchars((string) $valor, ENT_QUOTES, 'UTF-8');
@@ -117,7 +193,7 @@ function csrf_validar(): bool
 
 /**
  * Endereço de um arquivo da pasta assets.
- * Ex.: asset('css/vitrine.css') => /ProjetoMei/View/assets/css/vitrine.css
+ * Ex.: asset('css/Vitrine.css') => /ProjetoMei/View/assets/css/Vitrine.css
  */
 function asset(string $caminho): string
 {
@@ -125,7 +201,7 @@ function asset(string $caminho): string
 }
 
 /**
- * Endereço de uma rota pelo nome definido em routes/rotas.php.
+ * Endereço de uma rota pelo nome definido em routes/Rotas.php.
  * Ex.: rota('usuarios') ou rota('categorias', ['cat' => 'design'])
  */
 function rota(string $nome, array $params = []): string

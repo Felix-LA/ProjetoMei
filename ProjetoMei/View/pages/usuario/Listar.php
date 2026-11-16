@@ -1,10 +1,10 @@
 <?php
-/** Usuários: listagem, busca por nome e acesso aos modais de cadastro/edição/exclusão. */
+/** Usuários: listagem, busca por nome e modais de edição/exclusão. Novos MEIs entram pelo CadastroMei.php. */
 $tituloPagina  = 'Usuários';
 $paginaAtiva   = 'usuarios';
-$scriptsExtras = ['usuario.js'];
-require_once __DIR__ . '/../../routes/config.php';
-require VIEW_PATH . '/components/layout/header.php';
+$scriptsExtras = ['Usuario.js'];
+require_once __DIR__ . '/../../routes/Config.php';
+require VIEW_PATH . '/components/layout/Header.php';
 
 $busca    = trim($_GET['nome'] ?? '');
 $usuarios = [];
@@ -18,16 +18,12 @@ if ($busca !== '') {
 
 if ($resp['status'] === 404) {
     $usuarios = []; // nada encontrado
-} elseif ($resp['erro'] !== null && $resp['status'] !== 500) {
-    $erroApi = $resp['erro'];
-} elseif ($resp['status'] === 500 && $busca !== '') {
-    $usuarios = []; // API atual lança Exception quando não acha (vira 500)
-} elseif ($resp['status'] === 500) {
-    $erroApi = $resp['erro'];
+} elseif ($resp['erro'] !== null) {
+    $erroApi = api_mensagem($resp);
 } else {
     $dados = $resp['dados'];
     if (is_array($dados) && isset($dados['id'])) {
-        $dados = [$dados]; // a busca por nome pode devolver um único objeto
+        $dados = [$dados]; // a busca por nome devolve um único objeto
     }
     $usuarios = is_array($dados) ? $dados : [];
 }
@@ -35,7 +31,7 @@ if ($resp['status'] === 404) {
 
 <div class="barra">
     <h1>Usuários</h1>
-    <button type="button" class="btn" data-modal-abrir="modal-usuario" data-acao="novo">+ Novo usuário</button>
+    <a class="btn" href="<?= h(rota('cadastro-mei')) ?>">+ Novo MEI</a>
 </div>
 
 <form method="get" class="busca">
@@ -56,16 +52,22 @@ if ($resp['status'] === 404) {
             <tr>
                 <th style="width: 90px">ID</th>
                 <th>Nome</th>
+                <th>E-mail</th>
+                <th>Cidade</th>
+                <th>Plano</th>
                 <th style="width: 190px">Ações</th>
             </tr>
         </thead>
         <tbody>
         <?php if (!$usuarios): ?>
-            <tr><td colspan="3" class="tabela__vazio">Nenhum usuário encontrado.</td></tr>
+            <tr><td colspan="6" class="tabela__vazio">Nenhum usuário encontrado.</td></tr>
         <?php else: foreach ($usuarios as $u): ?>
             <tr>
                 <td><?= h($u['id'] ?? '') ?></td>
                 <td><?= h($u['nome'] ?? '') ?></td>
+                <td><?= h($u['email'] ?? '') ?></td>
+                <td><?= h(trim(($u['cidade'] ?? '') . (empty($u['estado']) ? '' : ' - ' . $u['estado']))) ?></td>
+                <td><?= h(($u['plano'] ?? '') === 'premium' ? 'Premium' : 'Gratuito') ?></td>
                 <td class="tabela__acoes">
                     <button type="button" class="btn btn--pequeno btn--claro"
                             data-modal-abrir="modal-usuario" data-acao="editar"
@@ -81,7 +83,7 @@ if ($resp['status'] === 404) {
 </div>
 
 <?php
-require VIEW_PATH . '/components/modais/modal-usuario.php';
-require VIEW_PATH . '/components/modais/modal-confirmar.php';
-require VIEW_PATH . '/components/layout/footer.php';
+require VIEW_PATH . '/components/modais/ModalUsuario.php';
+require VIEW_PATH . '/components/modais/ModalConfirmar.php';
+require VIEW_PATH . '/components/layout/Footer.php';
 ?>

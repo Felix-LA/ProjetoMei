@@ -1,0 +1,160 @@
+/* =====================================================================
+   Categoria.css — estilos exclusivos da página Categoria.php
+   (o cabeçalho .page-heading e as abas .naccs ficam em Vitrine.css)
+   ===================================================================== */
+
+/* ===== Caixa de estatística no cabeçalho ===== */
+.mei-stats {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: var(--sombra-forte);
+}
+
+.mei-stats .stats-number {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--azul-600);
+    margin-bottom: 0;
+}
+
+.mei-stats .stats-label {
+    font-size: 14px;
+    color: var(--texto-suave);
+    opacity: 1;
+}
+
+/* ===== Abas: menu horizontal ===== */
+.categoria .menu--horizontal {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    margin-bottom: 20px;
+}
+
+.categoria .menu--horizontal .thumb { justify-content: flex-start; }
+
+/* ===== Topo do painel ===== */
+.cat-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--borda);
+}
+
+.cat-topo__titulo { display: flex; align-items: center; gap: 14px; }
+.cat-topo h4 { margin: 0 0 6px; }
+
+.cat-icone {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--azul-900);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.category-badge {
+    background: #4CAF50;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+/* ===== Serviços em destaque ===== */
+.category-highlight {
+    background: linear-gradient(135deg, var(--azul-900) 0%, var(--azul-700) 100%);
+    color: white;
+    padding: 20px 24px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.category-highlight h5 { margin: 0 0 8px; font-weight: 700; }
+
+.service-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    columns: 2;
+    column-gap: 32px;
+}
+
+.service-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .18);
+    break-inside: avoid;
+}
+
+.service-list li:before {
+    content: "✓";
+    color: #a6f0c0;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* ===== Verificação ===== */
+.verification-info {
+    background: var(--azul-100);
+    padding: 15px 18px;
+    border-radius: 8px;
+    border-left: 4px solid var(--azul-600);
+    margin: 15px 0;
+}
+
+.verification-info h6 { color: var(--azul-900); font-weight: 700; margin-bottom: 6px; }
+.verification-info h6 i { color: var(--azul-600); margin-right: 4px; }
+.verification-info p { margin: 0; color: var(--texto-suave); }
+
+/* ===== Estatísticas da categoria ===== */
+.cat-stats {
+    background: var(--azul-100);
+    border: 1px solid var(--azul-200);
+    border-radius: 12px;
+    padding: 18px;
+    height: 100%;
+}
+
+.cat-stats h5 { color: var(--azul-900); font-weight: 700; font-size: 1rem; margin-bottom: 14px; }
+.cat-stats h5 i { color: var(--azul-600); margin-right: 6px; }
+.cat-stats dl { margin: 0; display: grid; gap: 12px; }
+.cat-stats dt { font-size: .8rem; font-weight: 500; color: var(--texto-suave); }
+.cat-stats dd { margin: 0; font-weight: 700; color: var(--texto); }
+
+/* ===== Como contratar ===== */
+.general-info {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--borda);
+}
+
+.general-info h4 { font-size: 1.15rem; }
+.passos { padding-left: 22px; margin: 0 0 14px; color: var(--texto-suave); }
+.passos li { padding: 3px 0 3px 4px; }
+.passos li::marker { color: var(--azul-600); font-weight: 700; }
+
+.dica {
+    background: #fff8e1;
+    border-left: 4px solid var(--dourado);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 0;
+    color: var(--texto);
+}
+
+/* ===== Chamada final ===== */
+.busca-avancada { text-align: center; padding-block: 56px; }
+.busca-avancada h3 { color: var(--azul-900); font-weight: 700; }
+.busca-avancada p { color: var(--texto-suave); margin-bottom: 20px; }
+
+@media (max-width: 575.98px) {
+    .service-list { columns: 1; }
+}
