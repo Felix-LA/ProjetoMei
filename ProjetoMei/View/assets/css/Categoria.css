@@ -60,15 +60,6 @@
     flex-shrink: 0;
 }
 
-.category-badge {
-    background: #4CAF50;
-    color: white;
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 12px;
-    display: inline-block;
-}
-
 /* ===== Serviços em destaque ===== */
 .category-highlight {
     background: linear-gradient(135deg, var(--azul-900) 0%, var(--azul-700) 100%);

@@ -30,29 +30,53 @@ $GLOBALS['ROTAS'] = require __DIR__ . '/Rotas.php';
  */
 function api(string $metodo, string $caminho = '', ?array $corpo = null): array
 {
-    $ch = curl_init(API_BASE . $caminho);
-
+    $url     = API_BASE . $caminho;
+    $metodo  = strtoupper($metodo);
     $headers = ['Accept: application/json'];
-    $opcoes = [
-        CURLOPT_CUSTOMREQUEST  => strtoupper($metodo),
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT        => 10,
-    ];
+    $json    = null;
 
     if ($corpo !== null) {
         $headers[] = 'Content-Type: application/json';
-        $opcoes[CURLOPT_POSTFIELDS] = json_encode($corpo);
+        $json = json_encode($corpo);
     }
-    $opcoes[CURLOPT_HTTPHEADER] = $headers;
 
-    curl_setopt_array($ch, $opcoes);
-    $resposta = curl_exec($ch);
-    $status   = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $erroCurl = curl_error($ch);
-    curl_close($ch);
+    // Preferência: cURL. Se a extensão não estiver instalada, usa o PHP puro (streams).
+    if (function_exists('curl_init')) {
+        $ch = curl_init($url);
+        $opcoes = [
+            CURLOPT_CUSTOMREQUEST  => $metodo,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => 10,
+            CURLOPT_HTTPHEADER     => $headers,
+        ];
+        if ($json !== null) {
+            $opcoes[CURLOPT_POSTFIELDS] = $json;
+        }
+        curl_setopt_array($ch, $opcoes);
+        $resposta = curl_exec($ch);
+        $status   = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $erroConexao = curl_error($ch);
+        curl_close($ch);
+    } else {
+        $contexto = stream_context_create(['http' => [
+            'method'        => $metodo,
+            'header'        => implode("\r\n", $headers),
+            'content'       => $json ?? '',
+            'timeout'       => 10,
+            'ignore_errors' => true, // devolve o corpo mesmo em 4xx/5xx
+        ]]);
+        $resposta = @file_get_contents($url, false, $contexto);
+        $status   = 0;
+        foreach ($http_response_header ?? [] as $linha) {
+            if (preg_match('#^HTTP/\S+\s+(\d{3})#', $linha, $m)) {
+                $status = (int) $m[1]; // fica com o último (após redirecionamentos)
+            }
+        }
+        $erroConexao = ($resposta === false) ? (error_get_last()['message'] ?? 'sem resposta') : '';
+    }
 
-    if ($resposta === false) {
-        return ['status' => 0, 'dados' => null, 'erro' => 'Não foi possível conectar à API: ' . $erroCurl];
+    if ($resposta === false || $status === 0) {
+        return ['status' => 0, 'dados' => null, 'erro' => 'Não foi possível conectar à API: ' . $erroConexao];
     }
 
     return [
@@ -62,7 +86,6 @@ function api(string $metodo, string $caminho = '', ?array $corpo = null): array
     ];
 }
 
-/** Escapa texto para exibir em HTML. */
 /**
  * Extrai uma mensagem legível de uma resposta de erro da API:
  * { "mensagem": "..." } (nossos 400/404/409) ou ProblemDetails com "errors" (validação automática).

@@ -67,7 +67,6 @@ $ativa  = $ativa === false ? 0 : $ativa;
                             <span class="cat-icone"><i class="fa-solid <?= h($icones[$d['slug']] ?? 'fa-briefcase') ?>"></i></span>
                             <div>
                                 <h4><?= h($d['titulo_topo']) ?></h4>
-                                <span class="category-badge"><?= h($d['badge']) ?></span>
                             </div>
                         </div>
                         <div class="main-white-button">
