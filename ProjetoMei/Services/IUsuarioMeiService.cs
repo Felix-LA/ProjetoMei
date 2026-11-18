@@ -1,4 +1,4 @@
-﻿using ProjetoMei.DataModel;
+using ProjetoMei.DataModel;
 using ProjetoMei.Model;
 
 namespace ProjetoMei.Interfaces
