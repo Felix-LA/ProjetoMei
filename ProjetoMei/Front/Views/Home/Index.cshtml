@@ -1,0 +1,218 @@
+@model HomeViewModel
+@{
+    ViewData["Title"] = "BuscaMei - Conectando Profissionais a Clientes";
+    ViewData["Pagina"] = "inicio";
+
+    var categorias = CategoriasDados.Resumos;
+    var slides = Model.Destaques.Chunk(3).ToList();   // 3 profissionais por slide
+
+    var estatisticas = new (string Numero, string Rotulo)[]
+    {
+        (Model.Total.ToString(), "MEIs Cadastrados"),
+        (Model.CategoriasUso.ToString(), "Categorias Atendidas"),
+        (Model.Cidades.ToString(), "Cidades"),
+        (Model.Premium.ToString(), "MEIs Premium"),
+    };
+
+    var vantagens = new (string Titulo, string Texto)[]
+    {
+        ("MEIs Verificados", "Todos os profissionais são MEIs regularizados com CNPJ ativo e documentos verificados."),
+        ("Avaliações Reais", "Sistema de avaliações por projetos concluídos, garantindo transparência e confiança."),
+        ("Orçamentos Gratuitos", "Solicite orçamentos de múltiplos profissionais e escolha a melhor proposta."),
+    };
+
+    string chamada = Model.Total > 0
+        ? $"{Model.Total} " + (Model.Total == 1 ? "Profissional MEI Cadastrado" : "Profissionais MEI Cadastrados")
+        : "Cadastre seu MEI e apareça na vitrine";
+}
+
+<!-- ===== Banner + busca ===== -->
+<section class="main-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="top-text header-text">
+                    <h6>@chamada</h6>
+                    <h2>Encontre os Melhores Profissionais para Seu Projeto</h2>
+                    <p>De marceneiros a programadores, designers a eletricistas - tudo em um só lugar!</p>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <form id="search-form" method="get" role="search" asp-controller="Profissionais" asp-action="Index">
+                    <div class="row g-3">
+                        <div class="col-lg-4 align-self-center">
+                            <select name="categoria" class="form-select" aria-label="Categoria" id="chooseCategory">
+                                <option value="" selected>Todas as Categorias</option>
+                                @foreach (var c in categorias)
+                                {
+                                    <option value="@c.Slug">@c.Opcao</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-4 align-self-center">
+                            <input type="text" name="localizacao" class="searchText form-control" placeholder="Cidade, bairro ou estado" autocomplete="on" required>
+                        </div>
+                        <div class="col-lg-4">
+                            <button class="main-button" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Buscar Profissionais</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-lg-10 offset-lg-1">
+                <ul class="categories">
+                    @foreach (var c in categorias)
+                    {
+                        <li>
+                            <a asp-controller="Categorias" asp-action="Index" asp-route-cat="@c.Slug">
+                                <span class="icon"><i class="fa-solid @c.Icone"></i></span> @c.Nome
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Estatísticas ===== -->
+<section class="container estatisticas">
+    <div class="row">
+        @foreach (var e in estatisticas)
+        {
+            <div class="col-6 col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number">@e.Numero</div>
+                    <div class="stats-label">@e.Rotulo</div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ===== Categorias em destaque (abas) ===== -->
+<section class="popular-categories">
+    <div class="container">
+        <div class="section-heading">
+            <h2>Categorias em Destaque</h2>
+            <h6>Encontre profissionais por área de atuação</h6>
+        </div>
+
+        <div class="row naccs" data-abas>
+            <div class="col-lg-3">
+                <div class="menu" role="tablist">
+                    @for (int i = 0; i < categorias.Count; i++)
+                    {
+                        var c = categorias[i];
+                        <button type="button" role="tab" class="thumb @(i == 0 ? "active" : "")"
+                                data-aba="@i" aria-selected="@(i == 0 ? "true" : "false")">
+                            <span class="icon"><i class="fa-solid @c.Icone"></i></span> @c.Nome
+                        </button>
+                    }
+                </div>
+            </div>
+
+            <div class="col-lg-9 align-self-center">
+                @for (int i = 0; i < categorias.Count; i++)
+                {
+                    var c = categorias[i];
+                    <div class="nacc @(i == 0 ? "active" : "")" data-painel="@i" role="tabpanel">
+                        <div class="row">
+                            <div class="col-lg-5 align-self-center">
+                                <div class="left-text">
+                                    <h4>@c.Titulo</h4>
+                                    <p>@c.Texto</p>
+                                    <div class="main-white-button">
+                                        <a asp-controller="Categorias" asp-action="Index" asp-route-cat="@c.Slug"><i class="fa-solid fa-eye"></i> @c.Botao</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 align-self-center">
+                                <div class="right-image">
+                                    <img src="@c.Imagem" alt="@c.Alt" class="categoria-image" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Profissionais em destaque (carrossel) ===== -->
+<section class="recent-listing" id="vitrine">
+    <div class="container">
+        <div class="section-heading">
+            <h2>Profissionais em Destaque</h2>
+            <h6>Conheça alguns dos nossos MEIs mais bem avaliados</h6>
+        </div>
+
+        @if (!Model.Vitrine.Ok)
+        {
+            <div class="vitrine-vazia">
+                <i class="fa-solid fa-plug-circle-xmark"></i>
+                <p class="mb-0">Não foi possível carregar os profissionais agora. Tente novamente em instantes.</p>
+            </div>
+        }
+        else if (slides.Count == 0)
+        {
+            <div class="vitrine-vazia">
+                <i class="fa-solid fa-user-plus"></i>
+                <p class="mb-0">Ainda não há MEIs cadastrados. Seja o primeiro a aparecer na vitrine!</p>
+                <div class="main-white-button"><a asp-controller="Cadastro" asp-action="Index">Cadastrar meu MEI</a></div>
+            </div>
+        }
+        else
+        {
+            <div class="carrossel" data-carrossel>
+                <div class="carrossel__janela">
+                    <div class="carrossel__trilho" data-carrossel-trilho>
+                        @foreach (var slide in slides)
+                        {
+                            <div class="carrossel__slide">
+                                <div class="row g-4">
+                                    @foreach (var p in slide)
+                                    {
+                                        <div class="col-lg-4 col-md-6">
+                                            <partial name="_CardProfissional" model="p" />
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                @if (slides.Count > 1)
+                {
+                    <div class="carrossel__controles">
+                        <button type="button" class="carrossel__seta" data-carrossel-anterior aria-label="Anterior">&#8249;</button>
+                        <div class="carrossel__pontos" data-carrossel-pontos></div>
+                        <button type="button" class="carrossel__seta" data-carrossel-proximo aria-label="Próximo">&#8250;</button>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ===== Vantagens ===== -->
+<section class="container vantagens">
+    <div class="section-heading">
+        <h2>Vantagens da BuscaMei</h2>
+        <h6>Por que escolher nossos profissionais</h6>
+    </div>
+    <div class="row g-4">
+        @foreach (var v in vantagens)
+        {
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <h4>@v.Titulo</h4>
+                    <p>@v.Texto</p>
+                </div>
+            </div>
+        }
+    </div>
+</section>

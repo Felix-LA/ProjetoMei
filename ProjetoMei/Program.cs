@@ -1,53 +1,86 @@
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
-using ProjetoMei.Data;
-using ProjetoMei.Interfaces;
-using ProjetoMei.Repository;
-using ProjetoMei.Services;
-using System;
+using ProjetoMei.Back.Data;
+using ProjetoMei.Back.Repository;
+using ProjetoMei.Back.Services;
+using ProjetoMei.Front.Services;
 
-var builder = WebApplication.CreateBuilder(args);
-
-
-builder.Services.AddControllers();
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-
-builder.Services.AddTransient<IUsuarioMeiService, UsuarioMeiService>();
-builder.Services.AddTransient<IUsuarioMeiRepository, UsuarioMeiRepository>();
-
-
-builder.Services.AddDbContext<MeiDbContext>(options =>
+// A pasta de arquivos estáticos (css, js, fonts, images) fica dentro do Front.
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
-    options.UseInMemoryDatabase("MyDatabase");
+    Args = args,
+    WebRootPath = "Front/wwwroot"
 });
 
+// ---- MVC: controllers da API (Back) e das páginas (Front) ----
+// AutoValidateAntiforgeryToken: todo POST dos formulários exige o token CSRF.
+// (O UsuarioMeiController da API tem [IgnoreAntiforgeryToken].)
+builder.Services.AddControllersWithViews(opcoes =>
+    opcoes.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
 
+// As views Razor ficam em Front/Views (e não em Views/ na raiz).
+builder.Services.Configure<RazorViewEngineOptions>(opcoes =>
+{
+    opcoes.ViewLocationFormats.Clear();
+    opcoes.ViewLocationFormats.Add("/Front/Views/{1}/{0}.cshtml");
+    opcoes.ViewLocationFormats.Add("/Front/Views/Shared/{0}.cshtml");
+});
 
+// Mantém acentos e emojis como estão no HTML (sem virar &#xE7; etc.).
+builder.Services.AddWebEncoders(opcoes =>
+    opcoes.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));
 
+// ---- Swagger: documenta só a API (não as páginas) ----
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(opcoes =>
+    opcoes.DocInclusionPredicate((_, api) =>
+        api.ActionDescriptor is ControllerActionDescriptor d
+        && d.ControllerTypeInfo.IsDefined(typeof(ApiControllerAttribute), true)));
 
+// ---- Back: injeção de dependência e banco ----
+// Scoped: uma instância por requisição, o ciclo de vida correto para quem usa o DbContext.
+builder.Services.AddScoped<IUsuarioMeiService, UsuarioMeiService>();
+builder.Services.AddScoped<IUsuarioMeiRepository, UsuarioMeiRepository>();
 
+// Banco em memória (os dados somem ao reiniciar).
+builder.Services.AddDbContext<MeiDbContext>(opcoes =>
+    opcoes.UseInMemoryDatabase("MyDatabase"));
 
-//var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionString");
+// ---- Front: sessão (guarda o usuário logado) ----
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(opcoes =>
+{
+    opcoes.Cookie.HttpOnly = true;
+    opcoes.Cookie.IsEssential = true;
+    opcoes.IdleTimeout = TimeSpan.FromHours(2);
+});
 
-//builder.Services.AddDbContext<MeiDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+// ---- Front: cliente da API (a API roda neste mesmo projeto) ----
+// A barra no fim da URL é importante: os caminhos ("vitrine", "login", "3") são relativos a ela.
+string urlApi = builder.Configuration["Api:BaseUrl"] ?? "http://localhost:5037/api/UsuarioMei/";
+builder.Services.AddHttpClient<ApiClient>(cliente =>
+{
+    cliente.BaseAddress = new Uri(urlApi.EndsWith('/') ? urlApi : urlApi + "/");
+    cliente.Timeout = TimeSpan.FromSeconds(10);
+});
+builder.Services.AddScoped<VitrineService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
-    app.UseSwagger();
+    app.UseSwagger();       // /swagger
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
+app.UseStaticFiles();       // Front/wwwroot
+app.UseRouting();
+app.UseSession();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

@@ -1,0 +1,15 @@
+@* Uma coluna de perguntas do FAQ (faq_coluna() do PHP). *@
+@model IEnumerable<PerguntaFaq>
+@foreach (var item in Model)
+{
+    <div class="faq-item">
+        <button type="button" class="faq-question" aria-expanded="false">
+            <span>@item.Pergunta</span>
+            <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="faq-answer">
+            @* Codifica o texto e só depois troca as quebras de linha por <br> (nl2br(h()) do PHP). *@
+            <p>@Html.Raw(Html.Encode(item.Resposta).Replace("\n", "<br>"))</p>
+        </div>
+    </div>
+}

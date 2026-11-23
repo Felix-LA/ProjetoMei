@@ -1,0 +1,84 @@
+@*
+    Layout azul antigo (Header.php + Footer.php), usado por Login e Usuários.
+    ViewData["Title"] = título da aba; ViewData["Pagina"] = "inicio" | "usuarios" | "login".
+    @section Scripts { } para JS extra.
+*@
+@{
+    string titulo = ViewData["Title"] as string ?? "BuscaMei";
+    string pagina = ViewData["Pagina"] as string ?? "";
+    SessaoUsuario? usuario = Context.UsuarioLogado();
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@titulo · BuscaMei</title>
+    <link rel="stylesheet" href="~/styles/Style.css">
+</head>
+<body>
+
+<header class="topo">
+    <div class="container topo__conteudo">
+        <a class="topo__marca" asp-controller="Home" asp-action="Index">Busca<strong>Mei</strong></a>
+        <nav class="topo__menu">
+            <a asp-controller="Home" asp-action="Index" class="@(pagina == "inicio" ? "ativo" : "")">Início</a>
+            <a asp-controller="Home" asp-action="Index" asp-fragment="vitrine">Vitrine</a>
+            <a asp-controller="Usuarios" asp-action="Index" class="@(pagina == "usuarios" ? "ativo" : "")">Usuários</a>
+            @if (usuario != null)
+            {
+                <span class="topo__usuario">@usuario.PrimeiroNome</span>
+                <a asp-controller="Conta" asp-action="Sair" class="btn btn--pequeno topo__login">Sair</a>
+            }
+            else
+            {
+                <a asp-controller="Conta" asp-action="Login" class="btn btn--pequeno topo__login">Login</a>
+            }
+        </nav>
+    </div>
+</header>
+
+<main class="container conteudo">
+    @if (TempData["flash_msg"] is string flashMsg)
+    {
+        <div class="alerta alerta--@(TempData["flash_tipo"] ?? "erro")" data-alerta role="alert">
+            <span>@flashMsg</span>
+            <button type="button" class="alerta__fechar" data-alerta-fechar aria-label="Fechar">&times;</button>
+        </div>
+    }
+
+    @RenderBody()
+</main>
+
+<footer class="rodape">
+    <div class="container rodape__grade">
+        <div>
+            <h3 class="rodape__titulo">Busca<strong>Mei</strong></h3>
+            <p>Vitrine online que aproxima microempreendedores individuais de quem precisa de um serviço.</p>
+        </div>
+
+        <div>
+            <h3 class="rodape__titulo">Contato</h3>
+            <ul class="rodape__lista">
+                <li>E-mail: <a href="mailto:contato@@projetomei.exemplo">contato@@projetomei.exemplo</a></li>
+                <li>Telefone: <a href="tel:+5567999990000">(67) 99999-0000</a></li>
+                <li>Atendimento: seg. a sex., 8h às 18h</li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="rodape__titulo">O site</h3>
+            <ul class="rodape__lista">
+                <li><a asp-controller="Home" asp-action="Index">Início</a></li>
+                <li><a asp-controller="Home" asp-action="Index" asp-fragment="vitrine">Vitrine</a></li>
+                <li><a asp-controller="Conta" asp-action="Login">Login</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container rodape__base">&copy; @DateTime.Now.Year BuscaMei. Todos os direitos reservados.</div>
+</footer>
+
+<script src="~/js/App.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

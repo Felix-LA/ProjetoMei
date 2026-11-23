@@ -1,0 +1,161 @@
+@{
+    ViewData["Title"] = "Contato - BuscaMei";
+    ViewData["Description"] = "Entre em contato com a BuscaMei - Sua plataforma para encontrar profissionais MEI qualificados";
+    ViewData["Pagina"] = "contato";
+
+    var faq = FaqDados.Perguntas;
+    int metade = (int)Math.Ceiling(faq.Count / 2.0);
+    var faqEsquerda = faq.Take(metade).ToList();
+    var faqDireita = faq.Skip(metade).ToList();
+
+    // (ícone, título, linha 1, destaque, observação)
+    var cartoes = new (string Icone, string Titulo, string Linha, string Destaque, string Obs)[]
+    {
+        ("fa-phone", "Telefone", "Segunda a Sexta: 9h às 18h", "(11) 99999-9999", "WhatsApp disponível"),
+        ("fa-envelope", "Email", "Resposta em até 24 horas", "contato@buscamei.com.br", "suporte@buscamei.com.br"),
+        ("fa-location-dot", "Endereço", "Escritório Central", "Av. Paulista, 1000", "São Paulo - SP, 01310-100"),
+    };
+
+    // (título, linha 1, linha 2)
+    var horarios = new (string Titulo, string Linha1, string Linha2)[]
+    {
+        ("Atendimento ao Cliente", "Segunda a Sexta: 9h às 18h", "Sábado: 9h às 13h"),
+        ("Suporte Técnico", "Segunda a Sexta: 8h às 20h", "Atendimento emergencial"),
+    };
+
+    var tiposContato = new (string Valor, string Rotulo)[]
+    {
+        ("cliente", "Sou Cliente - Buscando Profissional"),
+        ("mei", "Sou MEI - Quero me Cadastrar"),
+        ("duvida", "Dúvida sobre a Plataforma"),
+        ("sugestao", "Sugestão ou Feedback"),
+        ("parceria", "Proposta de Parceria"),
+        ("outro", "Outro Assunto"),
+    };
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Contato.css">
+}
+
+<!-- ===== Cabeçalho da página ===== -->
+<section class="contact-header">
+    <div class="container">
+        <h1>Entre em Contato</h1>
+        <p class="lead">Estamos aqui para ajudar você a encontrar o profissional MEI ideal ou esclarecer suas dúvidas</p>
+    </div>
+</section>
+
+<div class="container contato">
+
+    <!-- ===== Cartões de contato ===== -->
+    <div class="row g-4 mb-5">
+        @foreach (var c in cartoes)
+        {
+            <div class="col-md-4">
+                <div class="contact-info-card text-center">
+                    <div class="contact-icon"><i class="fa-solid @c.Icone"></i></div>
+                    <h4>@c.Titulo</h4>
+                    <p>@c.Linha</p>
+                    <h5>@c.Destaque</h5>
+                    <p class="text-muted mb-0">@c.Obs</p>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="row">
+        <!-- ===== Formulário ===== -->
+        <div class="col-lg-8">
+            <div class="contact-form">
+                <h3 class="mb-4">Envie uma Mensagem</h3>
+
+                <div id="contato-aviso" class="alert d-none" role="alert"></div>
+
+                <form id="contact-form" method="post" action="#" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Seu Nome *" aria-label="Seu nome" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Seu Email *" aria-label="Seu e-mail" required>
+                        </div>
+                    </div>
+
+                    <input type="text" class="form-control" id="subject" name="subject" placeholder="Assunto *" aria-label="Assunto" required>
+
+                    <select class="form-control" id="tipo-contato" name="tipo-contato" aria-label="Tipo de contato" required>
+                        <option value="">Selecione o tipo de contato *</option>
+                        @foreach (var t in tiposContato)
+                        {
+                            <option value="@t.Valor">@t.Rotulo</option>
+                        }
+                    </select>
+
+                    <textarea class="form-control" id="message" name="message" rows="6" placeholder="Sua Mensagem *" aria-label="Sua mensagem" required></textarea>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter">
+                        <label class="form-check-label" for="newsletter">
+                            Desejo receber novidades e ofertas da BuscaMei
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-button">
+                        <i class="fa-solid fa-paper-plane me-2"></i> Enviar Mensagem
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ===== Horários ===== -->
+        <div class="col-lg-4 mt-5 mt-lg-0">
+            <div class="contact-info-card">
+                <h4 class="mb-4">Horário de Atendimento</h4>
+
+                @foreach (var h in horarios)
+                {
+                    <div class="mb-4">
+                        <h6>@h.Titulo</h6>
+                        <p class="mb-2">@h.Linha1</p>
+                        <p class="text-muted">@h.Linha2</p>
+                    </div>
+                }
+
+                <div class="mb-4">
+                    <h6>Contato com Profissionais</h6>
+                    <p>24 horas via WhatsApp</p>
+                    <div class="main-white-button mt-3">
+                        <a href="https://wa.me/5511999999999" target="_blank" rel="noopener">
+                            <i class="fa-brands fa-whatsapp"></i> Falar no WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="social-contact">
+                    <a href="#" title="Facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" title="Instagram" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" title="LinkedIn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" title="YouTube" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Perguntas frequentes ===== -->
+    <section class="faq-section">
+        <div class="section-heading">
+            <h2>Perguntas Frequentes</h2>
+            <h6>Encontre respostas rápidas para suas dúvidas</h6>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6"><partial name="_FaqColuna" model="faqEsquerda" /></div>
+            <div class="col-lg-6"><partial name="_FaqColuna" model="faqDireita" /></div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="~/js/Contato.js"></script>
+}

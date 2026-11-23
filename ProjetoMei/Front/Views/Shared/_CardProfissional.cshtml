@@ -1,0 +1,37 @@
+@* Card de um MEI cadastrado na API. Ainda não há foto, nota nem preço: mostra iniciais e os dados reais. *@
+@model MeiCard
+<article class="listing-item">
+    <div class="left-image">
+        <div class="mei-avatar" aria-hidden="true">@Model.Iniciais</div>
+        <span class="mei-badge">@(Model.Premium ? "Premium" : "MEI Cadastrado")</span>
+    </div>
+
+    <div class="right-content">
+        <h4>@Model.Nome</h4>
+        <h6>@Model.Ramo</h6>
+
+        <div class="mb-2">
+            @foreach (string tag in Model.Tags.Take(4))
+            {
+                <span class="service-tag">@tag</span>
+            }
+        </div>
+
+        <p class="mei-descricao">@(Model.Descricao.Length > 110 ? Model.Descricao[..110] + "…" : Model.Descricao)</p>
+
+        <ul class="info">
+            @if (Model.Local != "")
+            {
+                <li><i class="fa-solid fa-location-dot"></i> @Model.Local</li>
+            }
+            @if (Model.Experiencia != "")
+            {
+                <li><i class="fa-solid fa-briefcase"></i> @Model.Experiencia</li>
+            }
+        </ul>
+
+        <div class="main-white-button">
+            <a asp-controller="Contato" asp-action="Index"><i class="fa-brands fa-whatsapp"></i> Solicitar Orçamento</a>
+        </div>
+    </div>
+</article>

@@ -1,0 +1,135 @@
+@*
+    Layout da vitrine (Topo.php + Rodape.php).
+    Cada view pode definir, no topo:
+      ViewData["Title"]            título da aba
+      ViewData["Description"]      meta description
+      ViewData["Pagina"]           "inicio" | "categorias" | "profissionais" | "contato" | ""
+      ViewData["RodapeCategorias"] true = rodapé com "Categorias Populares"
+    e usar @section Styles { } / @section Scripts { } para CSS e JS extras.
+*@
+@{
+    string titulo = ViewData["Title"] as string ?? "BuscaMei - Conectando Profissionais a Clientes";
+    string descricao = ViewData["Description"] as string
+        ?? "BuscaMei - Conectando profissionais autônomos a clientes. Encontre marceneiros, eletricistas, designers, programadores e muito mais.";
+    string pagina = ViewData["Pagina"] as string ?? "";
+    bool rodapeCategorias = ViewData["RodapeCategorias"] as bool? ?? false;
+    SessaoUsuario? usuario = Context.UsuarioLogado();
+
+    string Ativo(string p) => p == pagina ? "active" : "";
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="@descricao">
+    <meta name="author" content="BuscaMei">
+
+    <title>@titulo</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="~/css/Vitrine.css">
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+<header class="header-area">
+    <div class="container">
+        <nav class="main-nav">
+            <a asp-controller="Home" asp-action="Index" class="name-site logo">Busca<span>Mei</span></a>
+
+            <button type="button" class="menu-trigger" data-menu-botao aria-label="Abrir menu" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <ul class="nav" data-menu>
+                <li><a asp-controller="Home" asp-action="Index" class="@Ativo("inicio")">Início</a></li>
+                <li><a asp-controller="Categorias" asp-action="Index" class="@Ativo("categorias")">Categorias</a></li>
+                <li><a asp-controller="Profissionais" asp-action="Index" class="@Ativo("profissionais")">Profissionais</a></li>
+                <li><a asp-controller="Contato" asp-action="Index" class="@Ativo("contato")">Contato</a></li>
+                @if (usuario != null)
+                {
+                    <li><span class="topo-usuario"><i class="fa-solid fa-circle-user"></i> @usuario.PrimeiroNome</span></li>
+                    <li><a asp-controller="Conta" asp-action="Sair">Sair</a></li>
+                }
+                else
+                {
+                    <li><a asp-controller="Conta" asp-action="Login">Login</a></li>
+                }
+                <li>
+                    <div class="main-white-button"><a asp-controller="Cadastro" asp-action="Index"><i class="fa-solid fa-user-plus"></i> Cadastrar MEI</a></div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+@if (TempData["flash_msg"] is string flashMsg)
+{
+    <div class="aviso-flash aviso-flash--@(TempData["flash_tipo"] ?? "erro")" role="alert">@flashMsg</div>
+}
+
+@RenderBody()
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <h5>BuscaMei</h5>
+                <p>Conectando profissionais MEI a clientes desde 2023. Ajudamos microempreendedores a expandir seus negócios.</p>
+            </div>
+
+            <div class="col-lg-4">
+                @if (rodapeCategorias)
+                {
+                    <h5>Categorias Populares</h5>
+                    <ul class="footer-links">
+                        @foreach (var c in CategoriasDados.Resumos.Take(4))
+                        {
+                            <li><a asp-controller="Profissionais" asp-action="Index" asp-route-categoria="@c.Slug">@c.Nome</a></li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <h5>Links Rápidos</h5>
+                    <ul class="footer-links">
+                        @* Estas três páginas ainda não existem (como no PHP): os links dão 404 até serem criadas. *@
+                        <li><a href="/como-funciona">Como Funciona</a></li>
+                        <li><a asp-controller="Cadastro" asp-action="Index">Cadastrar MEI</a></li>
+                        <li><a href="/termos">Termos de Uso</a></li>
+                        <li><a href="/privacidade">Política de Privacidade</a></li>
+                    </ul>
+                }
+            </div>
+
+            <div class="col-lg-4">
+                <h5>@(rodapeCategorias ? "Precisa de Ajuda?" : "Contato")</h5>
+                <p><a href="mailto:suporte@@buscamei.com.br">suporte@@buscamei.com.br</a><br>
+                   <a href="tel:+5511999999999">(11) 99999-9999</a></p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="sub-footer">
+                    <p>Copyright &copy; @DateTime.Now.Year BuscaMei - Todos os direitos reservados</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/Vitrine.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,119 @@
+@model ProfissionaisViewModel
+@{
+    ViewData["Title"] = "Profissionais - BuscaMei";
+    ViewData["Description"] = "Veja os profissionais MEI da BuscaMei, organizados por categoria.";
+    ViewData["Pagina"] = "profissionais";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Listagem.css">
+}
+
+<!-- ===== Cabeçalho da página ===== -->
+<section class="page-heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="top-text header-text">
+                    <h6>Encontre seu profissional</h6>
+                    <h2>MEIs cadastrados por categoria</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Abas + carrosséis ===== -->
+<section class="listing-page listagem">
+    <div class="container">
+        @if (!Model.Vitrine.Ok)
+        {
+            <div class="vitrine-vazia">
+                <i class="fa-solid fa-plug-circle-xmark"></i>
+                <p class="mb-0">Não foi possível carregar os profissionais agora. Tente novamente em instantes.</p>
+            </div>
+        }
+        else if (Model.Abas.Count == 0)
+        {
+            <div class="vitrine-vazia">
+                <i class="fa-solid fa-user-plus"></i>
+                @if (Model.Localizacao != "")
+                {
+                    <p class="mb-0">Nenhum MEI encontrado em “@Model.Localizacao”.</p>
+                    <div class="main-white-button"><a asp-controller="Profissionais" asp-action="Index">Ver todos os profissionais</a></div>
+                }
+                else
+                {
+                    <p class="mb-0">Ainda não há MEIs cadastrados.</p>
+                    <div class="main-white-button"><a asp-controller="Cadastro" asp-action="Index">Cadastrar meu MEI</a></div>
+                }
+            </div>
+        }
+        else
+        {
+            if (Model.Localizacao != "")
+            {
+                <p class="mb-3">Mostrando MEIs em “<strong>@Model.Localizacao</strong>”.
+                    <a asp-controller="Profissionais" asp-action="Index">Limpar filtro</a></p>
+            }
+
+            <div class="row g-4 naccs" data-abas>
+
+                <div class="col-lg-3">
+                    <div class="menu" role="tablist">
+                        @for (int i = 0; i < Model.Abas.Count; i++)
+                        {
+                            var aba = Model.Abas[i];
+                            <button type="button" role="tab" class="thumb @(i == Model.AbaAtiva ? "active" : "")"
+                                    data-aba="@i" aria-selected="@(i == Model.AbaAtiva ? "true" : "false")">
+                                <span class="icon"><i class="fa-solid @aba.Icone"></i></span>
+                                @aba.Nome <small>(@aba.Itens.Count)</small>
+                            </button>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-lg-9">
+                    @for (int i = 0; i < Model.Abas.Count; i++)
+                    {
+                        var aba = Model.Abas[i];
+                        var slides = aba.Itens.Chunk(4).ToList();   // 4 cards por página do carrossel
+                        <div class="nacc @(i == Model.AbaAtiva ? "active" : "")" data-painel="@i" role="tabpanel">
+
+                            <div class="carrossel" data-carrossel>
+                                <div class="carrossel__janela">
+                                    <div class="carrossel__trilho" data-carrossel-trilho>
+                                        @foreach (var slide in slides)
+                                        {
+                                            <div class="carrossel__slide">
+                                                <div class="row g-4">
+                                                    @foreach (var p in slide)
+                                                    {
+                                                        <div class="col-md-6">
+                                                            <partial name="_CardProfissional" model="p" />
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                                @if (slides.Count > 1)
+                                {
+                                    <div class="carrossel__controles">
+                                        <button type="button" class="carrossel__seta" data-carrossel-anterior aria-label="Anterior">&#8249;</button>
+                                        <div class="carrossel__pontos" data-carrossel-pontos></div>
+                                        <button type="button" class="carrossel__seta" data-carrossel-proximo aria-label="Próximo">&#8250;</button>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    }
+                </div>
+
+            </div>
+        }
+    </div>
+</section>

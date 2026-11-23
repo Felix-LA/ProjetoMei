@@ -1,0 +1,149 @@
+@model CategoriasViewModel
+@{
+    ViewData["Title"] = "Categorias de Profissionais MEI - BuscaMei";
+    ViewData["Description"] = "Explore todas as categorias de profissionais MEI disponíveis na BuscaMei. Encontre marceneiros, eletricistas, programadores, designers e muito mais.";
+    ViewData["Pagina"] = "categorias";
+    ViewData["RodapeCategorias"] = true;
+
+    var detalhes = CategoriasDados.Detalhes;
+    var icones = CategoriasDados.Resumos.ToDictionary(c => c.Slug, c => c.Icone);
+    string Icone(string slug) => icones.TryGetValue(slug, out string? ic) ? ic : "fa-briefcase";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Categoria.css">
+}
+
+<!-- ===== Cabeçalho da página ===== -->
+<section class="page-heading">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <div class="top-text header-text">
+                    <h6>Explore Nossas Categorias de Profissionais</h6>
+                    <h2>Encontre o Profissional MEI Ideal para Seu Projeto</h2>
+                    <p>Temos uma ampla gama de categorias de serviços oferecidos por profissionais MEI regularizados</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="mei-stats text-center">
+                    <div class="stats-number">@Model.Total</div>
+                    <div class="stats-label">Profissionais MEI</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Categorias (abas) ===== -->
+<section class="category-post categoria">
+    <div class="container">
+        <div class="naccs" data-abas>
+
+            <div class="menu menu--horizontal" role="tablist">
+                @for (int i = 0; i < detalhes.Count; i++)
+                {
+                    var d = detalhes[i];
+                    <button type="button" role="tab" class="thumb @(i == Model.Ativa ? "active" : "")"
+                            data-aba="@i" aria-selected="@(i == Model.Ativa ? "true" : "false")">
+                        <span class="icon"><i class="fa-solid @Icone(d.Slug)"></i></span>
+                        @d.Nome
+                    </button>
+                }
+            </div>
+
+            @for (int i = 0; i < detalhes.Count; i++)
+            {
+                var d = detalhes[i];
+                <div class="nacc @(i == Model.Ativa ? "active" : "")" data-painel="@i" role="tabpanel">
+
+                    <!-- Topo do painel -->
+                    <div class="cat-topo">
+                        <div class="cat-topo__titulo">
+                            <span class="cat-icone"><i class="fa-solid @Icone(d.Slug)"></i></span>
+                            <div>
+                                <h4>@d.TituloTopo</h4>
+                            </div>
+                        </div>
+                        <div class="main-white-button">
+                            <a asp-controller="Profissionais" asp-action="Index" asp-route-categoria="@d.Slug"><i class="fa-solid fa-eye"></i> Ver Profissionais</a>
+                        </div>
+                    </div>
+
+                    <!-- Descrição + estatísticas -->
+                    <div class="row g-4">
+                        <div class="col-lg-9">
+                            <h4>@d.Titulo</h4>
+                            <p>@d.Texto</p>
+
+                            <div class="category-highlight">
+                                <h5>@d.Destaque</h5>
+                                <ul class="service-list">
+                                    @foreach (string servico in d.Servicos)
+                                    {
+                                        <li>@servico</li>
+                                    }
+                                </ul>
+                            </div>
+
+                            @if (d.Verificacao != null)
+                            {
+                                <div class="verification-info">
+                                    <h6><i class="fa-solid @d.Verificacao.Icone"></i> @d.Verificacao.Titulo</h6>
+                                    <p>@d.Verificacao.Texto</p>
+                                </div>
+                            }
+
+                            @if (d.Nota != null)
+                            {
+                                <p><strong>@d.Nota.Rotulo:</strong> @d.Nota.Texto</p>
+                            }
+                        </div>
+
+                        <div class="col-lg-3">
+                            <aside class="cat-stats">
+                                <h5><i class="fa-solid fa-chart-column"></i> Estatísticas</h5>
+                                <dl>
+                                    @foreach (var e in d.Estatisticas)
+                                    {
+                                        <div>
+                                            <dt>@e.Rotulo</dt>
+                                            <dd>@e.Valor</dd>
+                                        </div>
+                                    }
+                                </dl>
+                            </aside>
+                        </div>
+                    </div>
+
+                    <!-- Como contratar -->
+                    <div class="general-info">
+                        <h4>@d.Contratar.Titulo</h4>
+                        <p>@d.Contratar.Intro</p>
+                        <ol class="passos">
+                            @foreach (string passo in d.Contratar.Passos)
+                            {
+                                <li>@passo</li>
+                            }
+                        </ol>
+                        @if (d.Contratar.Dica != null)
+                        {
+                            <p class="dica"><strong>@d.Contratar.Dica.Rotulo:</strong> @d.Contratar.Dica.Texto</p>
+                        }
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    </div>
+</section>
+
+<!-- ===== Chamada final ===== -->
+<section class="container busca-avancada">
+    <h3>Não Encontrou o Que Procurava?</h3>
+    <p>Temos muitas outras subcategorias disponíveis. Use nossa busca avançada ou entre em contato conosco.</p>
+    <div class="main-white-button">
+        <a asp-controller="Profissionais" asp-action="Index"><i class="fa-solid fa-magnifying-glass"></i> Busca Avançada</a>
+    </div>
+</section>
