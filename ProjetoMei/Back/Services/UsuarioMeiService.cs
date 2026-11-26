@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using ProjetoMei.Back.Models;
 using ProjetoMei.Back.Repository;
@@ -8,10 +7,12 @@ namespace ProjetoMei.Back.Services
     public class UsuarioMeiService : IUsuarioMeiService
     {
         private readonly IUsuarioMeiRepository _usuarioMeiRepository;
+        private readonly IAdministradorRepository _administradorRepository;
 
-        public UsuarioMeiService(IUsuarioMeiRepository usuarioMeiRepository)
+        public UsuarioMeiService(IUsuarioMeiRepository usuarioMeiRepository, IAdministradorRepository administradorRepository)
         {
             _usuarioMeiRepository = usuarioMeiRepository;
+            _administradorRepository = administradorRepository;
         }
 
         public UsuarioMeiModel Adicionar(UsuarioMeiDataModel usuarioMeiDataModel)
@@ -21,12 +22,13 @@ namespace ProjetoMei.Back.Services
             Normalizar(usuarioMeiDataModel);
             ValidarSenha(usuarioMeiDataModel.Senha);
 
-            if (_usuarioMeiRepository.ExisteCpfOuEmail(usuarioMeiDataModel.Cpf, usuarioMeiDataModel.Email))
+            if (_administradorRepository.ExisteEmail(usuarioMeiDataModel.Email)
+                || _usuarioMeiRepository.ExisteCpfOuEmail(usuarioMeiDataModel.Cpf, usuarioMeiDataModel.Email))
             {
                 throw new InvalidOperationException("Já existe um cadastro com este CPF ou e-mail.");
             }
 
-            return _usuarioMeiRepository.Adicionar(usuarioMeiDataModel, GerarHash(usuarioMeiDataModel.Senha));
+            return _usuarioMeiRepository.Adicionar(usuarioMeiDataModel, SenhaHasher.Gerar(usuarioMeiDataModel.Senha));
         }
 
         public List<UsuarioMeiModel> BuscarUsuarios()
@@ -60,7 +62,7 @@ namespace ProjetoMei.Back.Services
             if (!string.IsNullOrEmpty(usuarioMeiDataModel.Senha))
             {
                 ValidarSenha(usuarioMeiDataModel.Senha);
-                novoHash = GerarHash(usuarioMeiDataModel.Senha);
+                novoHash = SenhaHasher.Gerar(usuarioMeiDataModel.Senha);
             }
 
             return _usuarioMeiRepository.Atualizar(usuarioMeiDataModel, Id, novoHash);
@@ -97,12 +99,46 @@ namespace ProjetoMei.Back.Services
         {
             ArgumentNullException.ThrowIfNull(login);
 
-            UsuarioMeiModel? usuario = _usuarioMeiRepository.BuscarPorEmail(login.Email.Trim().ToLowerInvariant());
+            string email = login.Email.Trim().ToLowerInvariant();
 
-            // Mesma resposta para "e-mail não existe" e "senha errada" (não revela quais e-mails existem).
-            if (usuario == null || !VerificarHash(login.Senha, usuario.SenhaHash))
+            // 1) Administrador?
+            AdministradorModel? admin = _administradorRepository.BuscarPorEmail(email);
+            if (admin != null)
+            {
+                if (!SenhaHasher.Verificar(login.Senha, admin.SenhaHash))
+                {
+                    return null;
+                }
+
+                return new UsuarioMeiLoginModel
+                {
+                    Id = admin.Id,
+                    Nome = admin.Nome,
+                    Email = admin.Email,
+                    Plano = "admin",
+                    Perfil = "admin"
+                };
+            }
+
+            // 2) MEI. Mesma resposta (null = 401) para "e-mail não existe" e "senha errada":
+            //    não revela quais e-mails existem.
+            UsuarioMeiModel? usuario = _usuarioMeiRepository.BuscarPorEmail(email);
+            if (usuario == null || !SenhaHasher.Verificar(login.Senha, usuario.SenhaHash))
             {
                 return null;
+            }
+
+            // Senha correta, mas o cadastro ainda não foi liberado (só avisa quem provou ser o dono).
+            if (usuario.Status == StatusCadastro.Pendente)
+            {
+                throw new UnauthorizedAccessException(
+                    "Seu cadastro ainda está em análise. Você poderá entrar assim que um administrador aprová-lo.");
+            }
+
+            if (usuario.Status == StatusCadastro.Rejeitado)
+            {
+                string motivo = string.IsNullOrWhiteSpace(usuario.MotivoRejeicao) ? "" : $" Motivo: {usuario.MotivoRejeicao}";
+                throw new UnauthorizedAccessException("Seu cadastro foi rejeitado." + motivo);
             }
 
             return new UsuarioMeiLoginModel
@@ -110,8 +146,45 @@ namespace ProjetoMei.Back.Services
                 Id = usuario.Id,
                 Nome = usuario.Nome,
                 Email = usuario.Email,
-                Plano = usuario.Plano
+                Plano = usuario.Plano,
+                Perfil = "mei"
             };
+        }
+
+        public List<UsuarioMeiModel> BuscarCadastros(string? status)
+        {
+            status = string.IsNullOrWhiteSpace(status) || status.Trim().ToLowerInvariant() == "todos"
+                ? null
+                : status.Trim().ToLowerInvariant();
+
+            if (status != null && !StatusCadastro.Valido(status))
+            {
+                throw new ArgumentException("Status inválido. Use pendente, aprovado, rejeitado ou todos.");
+            }
+
+            return _usuarioMeiRepository.BuscarPorStatus(status);
+        }
+
+        public UsuarioMeiModel Aprovar(int Id)
+        {
+            return _usuarioMeiRepository.DefinirStatus(Id, StatusCadastro.Aprovado, null);
+        }
+
+        public UsuarioMeiModel Rejeitar(int Id, string motivo)
+        {
+            motivo = (motivo ?? string.Empty).Trim();
+
+            if (motivo.Length == 0)
+            {
+                throw new ArgumentException("Informe o motivo da rejeição.");
+            }
+
+            if (motivo.Length > 300)
+            {
+                throw new ArgumentException("O motivo deve ter no máximo 300 caracteres.");
+            }
+
+            return _usuarioMeiRepository.DefinirStatus(Id, StatusCadastro.Rejeitado, motivo);
         }
 
         private static void ValidarSenha(string? senha)
@@ -119,39 +192,6 @@ namespace ProjetoMei.Back.Services
             if (string.IsNullOrEmpty(senha) || senha.Length < 8)
             {
                 throw new ArgumentException("A senha deve ter pelo menos 8 caracteres.");
-            }
-        }
-
-        // Formato guardado: v1.{iterações}.{salt em base64}.{hash em base64}
-        private const int Iteracoes = 100_000;
-
-        private static string GerarHash(string senha)
-        {
-            byte[] salt = RandomNumberGenerator.GetBytes(16);
-            byte[] hash = Rfc2898DeriveBytes.Pbkdf2(senha, salt, Iteracoes, HashAlgorithmName.SHA256, 32);
-
-            return $"v1.{Iteracoes}.{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
-        }
-
-        private static bool VerificarHash(string senha, string guardado)
-        {
-            string[] partes = (guardado ?? string.Empty).Split('.');
-            if (partes.Length != 4 || partes[0] != "v1" || !int.TryParse(partes[1], out int iteracoes))
-            {
-                return false;
-            }
-
-            try
-            {
-                byte[] salt = Convert.FromBase64String(partes[2]);
-                byte[] esperado = Convert.FromBase64String(partes[3]);
-                byte[] calculado = Rfc2898DeriveBytes.Pbkdf2(senha, salt, iteracoes, HashAlgorithmName.SHA256, esperado.Length);
-
-                return CryptographicOperations.FixedTimeEquals(calculado, esperado);
-            }
-            catch (FormatException)
-            {
-                return false;
             }
         }
 

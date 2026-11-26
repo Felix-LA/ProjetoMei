@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using ProjetoMei.Back.Data;
+using ProjetoMei.Back.Filters;
 using ProjetoMei.Back.Repository;
 using ProjetoMei.Back.Services;
 using ProjetoMei.Front.Services;
@@ -45,10 +46,13 @@ builder.Services.AddSwaggerGen(opcoes =>
 // Scoped: uma instância por requisição, o ciclo de vida correto para quem usa o DbContext.
 builder.Services.AddScoped<IUsuarioMeiService, UsuarioMeiService>();
 builder.Services.AddScoped<IUsuarioMeiRepository, UsuarioMeiRepository>();
+builder.Services.AddScoped<IAdministradorRepository, AdministradorRepository>();
 
-// Banco em memória (os dados somem ao reiniciar).
+// Banco MySQL (string de conexão em ConnectionStrings:MySql, no appsettings.json).
+string conexaoMySql = builder.Configuration.GetConnectionString("MySql")
+    ?? throw new InvalidOperationException("Falta ConnectionStrings:MySql no appsettings.json.");
 builder.Services.AddDbContext<MeiDbContext>(opcoes =>
-    opcoes.UseInMemoryDatabase("MyDatabase"));
+    opcoes.UseMySql(conexaoMySql, new MySqlServerVersion(new Version(8, 0, 36))));
 
 // ---- Front: sessão (guarda o usuário logado) ----
 builder.Services.AddDistributedMemoryCache();
@@ -66,10 +70,29 @@ builder.Services.AddHttpClient<ApiClient>(cliente =>
 {
     cliente.BaseAddress = new Uri(urlApi.EndsWith('/') ? urlApi : urlApi + "/");
     cliente.Timeout = TimeSpan.FromSeconds(10);
+
+    // Chave que libera os endpoints internos da API (admin, listagem, edição, exclusão).
+    cliente.DefaultRequestHeaders.Add(ChaveApiAttribute.Cabecalho, builder.Configuration["Api:Chave"] ?? string.Empty);
 });
 builder.Services.AddScoped<VitrineService>();
 
 var app = builder.Build();
+
+// ---- Banco: cria banco/tabelas se não existirem e o primeiro administrador ----
+using (IServiceScope escopo = app.Services.CreateScope())
+{
+    try
+    {
+        BancoInicializador.Inicializar(escopo.ServiceProvider, app.Configuration);
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogCritical(ex,
+            "Não foi possível preparar o banco MySQL. Confira se o MySQL está rodando e se " +
+            "ConnectionStrings:MySql (servidor, usuário e senha) está correta no appsettings.json.");
+        throw;
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {

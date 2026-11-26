@@ -5,7 +5,7 @@ using ProjetoMei.Front.Services;
 
 namespace ProjetoMei.Front.Controllers
 {
-    /// <summary>Usuários: listagem, busca por nome, edição do nome e exclusão (pages/usuario/*.php).</summary>
+    /// <summary>Usuários (somente administrador): listagem, busca por nome, edição do nome e exclusão (pages/usuario/*.php).</summary>
     public class UsuariosController : BaseController
     {
         private readonly ApiClient _api;
@@ -18,6 +18,8 @@ namespace ProjetoMei.Front.Controllers
         [HttpGet("usuarios")]
         public async Task<IActionResult> Index(string? nome)
         {
+            if (ExigirAdmin() is IActionResult negado) return negado;
+
             string busca = (nome ?? string.Empty).Trim();
             var usuarios = new List<UsuarioApi>();
             string? erroApi = null;
@@ -55,6 +57,8 @@ namespace ProjetoMei.Front.Controllers
         [HttpPost("usuarios/salvar")]
         public async Task<IActionResult> Salvar(int id, string? nome)
         {
+            if (ExigirAdmin() is IActionResult negado) return negado;
+
             nome = (nome ?? string.Empty).Trim();
 
             if (id <= 0)
@@ -89,6 +93,8 @@ namespace ProjetoMei.Front.Controllers
         [HttpPost("usuarios/excluir")]
         public async Task<IActionResult> Excluir(int id)
         {
+            if (ExigirAdmin() is IActionResult negado) return negado;
+
             if (id <= 0)
             {
                 Flash("erro", "Usuário inválido.");

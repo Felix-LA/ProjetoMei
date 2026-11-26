@@ -11,6 +11,10 @@ namespace ProjetoMei.Front.Models
 
     public record CategoriasViewModel(int Total, int Ativa);
 
+    public record AdminViewModel(
+        string Status, IReadOnlyList<CadastroAdminApi> Itens,
+        int Pendentes, int Aprovados, int Rejeitados, string? ErroApi);
+
     public record UsuariosViewModel(string Busca, IReadOnlyList<UsuarioApi> Usuarios, string? ErroApi);
 
     public class LoginViewModel

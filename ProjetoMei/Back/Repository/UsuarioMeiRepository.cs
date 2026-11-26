@@ -103,12 +103,44 @@ namespace ProjetoMei.Back.Repository
 
         public List<UsuarioMeiModel> BuscarVitrine()
         {
-            // Premium primeiro; dentro de cada plano, os cadastros mais recentes.
+            // Só cadastros aprovados. Premium primeiro; dentro de cada plano, os mais recentes.
             return _meiDbContext.Meis
                 .AsNoTracking()
+                .Where(u => u.Status == StatusCadastro.Aprovado)
                 .OrderByDescending(u => u.Plano == "premium")
                 .ThenByDescending(u => u.DataCadastro)
                 .ToList();
+        }
+
+        public List<UsuarioMeiModel> BuscarPorStatus(string? status)
+        {
+            IQueryable<UsuarioMeiModel> consulta = _meiDbContext.Meis.AsNoTracking();
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                consulta = consulta.Where(u => u.Status == status);
+            }
+
+            // Mais recentes primeiro.
+            return consulta.OrderByDescending(u => u.DataCadastro).ToList();
+        }
+
+        public UsuarioMeiModel DefinirStatus(int Id, string status, string? motivo)
+        {
+            UsuarioMeiModel? usuario = _meiDbContext.Meis.Find(Id);
+
+            if (usuario == null)
+            {
+                throw new KeyNotFoundException("Usuário não encontrado.");
+            }
+
+            usuario.Status = status;
+            usuario.MotivoRejeicao = status == StatusCadastro.Rejeitado ? motivo : null;
+            usuario.DataAnalise = DateTime.UtcNow;
+
+            _meiDbContext.SaveChanges();
+
+            return usuario;
         }
 
         public UsuarioMeiModel? BuscarPorEmail(string email)

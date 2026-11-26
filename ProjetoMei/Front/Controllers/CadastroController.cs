@@ -57,7 +57,7 @@ namespace ProjetoMei.Front.Controllers
             ApiResposta resposta = await _api.PostAsync(string.Empty, corpo);
 
             if (resposta.Ok)
-                return Resposta(201, true, "Cadastro realizado com sucesso.");
+                return Resposta(201, true, "Cadastro enviado para análise.");
 
             if (resposta.SemConexao)
                 return Resposta(503, false, "Não foi possível conectar à API. Tente novamente em instantes.");

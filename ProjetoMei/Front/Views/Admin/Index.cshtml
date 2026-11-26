@@ -1,0 +1,129 @@
+@model AdminViewModel
+@{
+    Layout = "_LayoutAntigo";
+    ViewData["Title"] = "Cadastros de MEI";
+    ViewData["Pagina"] = "admin";
+
+    var abas = new (string Chave, string Nome, int Total)[]
+    {
+        ("pendente", "Pendentes", Model.Pendentes),
+        ("aprovado", "Aprovados", Model.Aprovados),
+        ("rejeitado", "Rejeitados", Model.Rejeitados),
+        ("todos", "Todos", Model.Pendentes + Model.Aprovados + Model.Rejeitados),
+    };
+
+    string Cor(string s) => s switch
+    {
+        "aprovado" => "background:#dff5e3;color:#176b2c",
+        "rejeitado" => "background:#fde2e2;color:#a12828",
+        _ => "background:#fff1cc;color:#8a5a00"
+    };
+
+    string Mascara(string v, string tipo)
+    {
+        if (tipo == "cpf" && v.Length == 11) return $"{v[..3]}.{v[3..6]}.{v[6..9]}-{v[9..]}";
+        if (tipo == "cnpj" && v.Length == 14) return $"{v[..2]}.{v[2..5]}.{v[5..8]}/{v[8..12]}-{v[12..]}";
+        if (tipo == "tel" && v.Length == 11) return $"({v[..2]}) {v[2..7]}-{v[7..]}";
+        if (tipo == "tel" && v.Length == 10) return $"({v[..2]}) {v[2..6]}-{v[6..]}";
+        return v;
+    }
+}
+
+<div class="barra">
+    <h1>Cadastros de MEI</h1>
+</div>
+
+<p>Aprove ou rejeite os cadastros. Só os <strong>aprovados</strong> aparecem na vitrine e conseguem entrar na conta.</p>
+
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:16px 0">
+    @foreach (var aba in abas)
+    {
+        <a class="btn btn--pequeno @(Model.Status == aba.Chave ? "" : "btn--claro")"
+           asp-controller="Admin" asp-action="Index" asp-route-status="@aba.Chave">@aba.Nome (@aba.Total)</a>
+    }
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErroApi))
+{
+    <div class="alerta alerta--erro"><span>@Model.ErroApi</span></div>
+}
+
+<div class="tabela-wrap">
+    <table class="tabela">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Cidade</th>
+                <th>Plano</th>
+                <th>Situação</th>
+                <th style="width: 360px">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model.Itens.Count == 0)
+        {
+            <tr><td colspan="6" class="tabela__vazio">Nenhum cadastro nesta lista.</td></tr>
+        }
+        else
+        {
+            foreach (var c in Model.Itens)
+            {
+                <tr>
+                    <td>
+                        <strong>@c.Nome</strong>
+                        <details style="margin-top:6px">
+                            <summary>Ver dados</summary>
+                            <div style="font-size:.9em;line-height:1.6;margin-top:6px">
+                                CPF: @Mascara(c.Cpf, "cpf")<br>
+                                CNPJ: @Mascara(c.Cnpj, "cnpj")<br>
+                                Telefone: @Mascara(c.Telefone, "tel")<br>
+                                Ramo: @c.RamoAtividade<br>
+                                Categorias: @c.Categorias<br>
+                                Experiência: @(string.IsNullOrEmpty(c.Experiencia) ? "-" : c.Experiencia)<br>
+                                Portfólio: @(string.IsNullOrEmpty(c.Portfolio) ? "-" : c.Portfolio)<br>
+                                Descrição: @c.Descricao<br>
+                                Cadastrado em: @c.DataCadastro.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                                @if (c.DataAnalise != null)
+                                {
+                                    <br />
+                                    <span>Analisado em: @c.DataAnalise.Value.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</span>
+                                }
+                            </div>
+                        </details>
+                    </td>
+                    <td>@c.Email</td>
+                    <td>@(string.IsNullOrEmpty(c.Estado) ? c.Cidade : $"{c.Cidade} - {c.Estado}")</td>
+                    <td>@(c.Plano == "premium" ? "Premium" : "Gratuito")</td>
+                    <td>
+                        <span style="@Html.Raw(Cor(c.Status));padding:2px 10px;border-radius:999px;font-size:.85em;white-space:nowrap">@(char.ToUpper(c.Status[0]) + c.Status[1..])</span>
+                        @if (c.Status == "rejeitado" && !string.IsNullOrEmpty(c.MotivoRejeicao))
+                        {
+                            <div style="font-size:.85em;margin-top:4px">Motivo: @c.MotivoRejeicao</div>
+                        }
+                    </td>
+                    <td class="tabela__acoes">
+                        @if (c.Status != "aprovado")
+                        {
+                            <form method="post" asp-controller="Admin" asp-action="Aprovar" style="display:inline">
+                                <input type="hidden" name="id" value="@c.Id">
+                                <input type="hidden" name="status" value="@Model.Status">
+                                <button type="submit" class="btn btn--pequeno">Aprovar</button>
+                            </form>
+                        }
+                        @if (c.Status != "rejeitado")
+                        {
+                            <form method="post" asp-controller="Admin" asp-action="Rejeitar" style="display:inline-flex;gap:6px;margin-top:6px">
+                                <input type="hidden" name="id" value="@c.Id">
+                                <input type="hidden" name="status" value="@Model.Status">
+                                <input type="text" name="motivo" maxlength="300" required placeholder="Motivo da rejeição" style="min-width:150px">
+                                <button type="submit" class="btn btn--pequeno btn--perigo">Rejeitar</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>

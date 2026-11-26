@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using ProjetoMei.Back.Filters;
 using ProjetoMei.Back.Models;
 using ProjetoMei.Back.Services;
 
 namespace ProjetoMei.Back.Controllers
 {
     // A API é chamada pelo próprio site (HttpClient), sem o token CSRF dos formulários.
+    // Públicos: cadastro (POST), login e vitrine. Os demais exigem a chave [ChaveApi].
     [ApiController]
     [IgnoreAntiforgeryToken]
     [Route("api/[controller]")]
@@ -50,9 +52,20 @@ namespace ProjetoMei.Back.Controllers
         [HttpPost("login")]
         [ProducesResponseType(typeof(UsuarioMeiLoginModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public ActionResult<UsuarioMeiLoginModel> Login([FromBody] LoginDataModel login)
         {
-            UsuarioMeiLoginModel? usuario = _usuarioMeiService.Autenticar(login);
+            UsuarioMeiLoginModel? usuario;
+
+            try
+            {
+                usuario = _usuarioMeiService.Autenticar(login);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Senha correta, mas o cadastro está pendente ou foi rejeitado.
+                return StatusCode(StatusCodes.Status403Forbidden, new { mensagem = ex.Message });
+            }
 
             if (usuario == null)
             {
@@ -72,6 +85,7 @@ namespace ProjetoMei.Back.Controllers
 
         // GET api/UsuarioMei
         [HttpGet]
+        [ChaveApi]
         [ProducesResponseType(typeof(IEnumerable<UsuarioMeiModel>), StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<UsuarioMeiModel>> BuscarUsuarios()
         {
@@ -80,6 +94,7 @@ namespace ProjetoMei.Back.Controllers
 
         // GET api/UsuarioMei/5
         [HttpGet("{id:int:min(1)}")]
+        [ChaveApi]
         [ProducesResponseType(typeof(UsuarioMeiModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<UsuarioMeiModel> BuscarUsuarioPorId(int id)
@@ -96,6 +111,7 @@ namespace ProjetoMei.Back.Controllers
 
         // GET api/UsuarioMei/nome/joao
         [HttpGet("nome/{nome}")]
+        [ChaveApi]
         [ProducesResponseType(typeof(UsuarioMeiModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -118,6 +134,7 @@ namespace ProjetoMei.Back.Controllers
 
         // PUT api/UsuarioMei/5
         [HttpPut("{id:int:min(1)}")]
+        [ChaveApi]
         [ProducesResponseType(typeof(UsuarioMeiModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -147,6 +164,7 @@ namespace ProjetoMei.Back.Controllers
 
         // DELETE api/UsuarioMei/5
         [HttpDelete("{id:int:min(1)}")]
+        [ChaveApi]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult DeletarPorID(int id)

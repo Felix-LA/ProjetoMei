@@ -7,5 +7,8 @@ namespace ProjetoMei.Back.Models
         public string Nome { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Plano { get; set; } = "gratuito";
+
+        /// <summary>"mei" ou "admin".</summary>
+        public string Perfil { get; set; } = "mei";
     }
 }

@@ -33,6 +33,15 @@ namespace ProjetoMei.Back.Models
         // "gratuito" ou "premium".
         [MaxLength(20)] public string Plano { get; set; } = "gratuito";
 
+        // "pendente" (recém-cadastrado), "aprovado" (aparece na vitrine e pode entrar) ou "rejeitado".
+        [MaxLength(20)] public string Status { get; set; } = StatusCadastro.Pendente;
+
+        // Preenchido pelo administrador ao rejeitar.
+        [MaxLength(300)] public string? MotivoRejeicao { get; set; }
+
+        // Quando o administrador aprovou ou rejeitou.
+        public DateTime? DataAnalise { get; set; }
+
         // Hash PBKDF2 da senha. [JsonIgnore]: nunca sai em nenhuma resposta da API.
         [JsonIgnore]
         [MaxLength(200)]

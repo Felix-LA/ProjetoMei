@@ -16,6 +16,8 @@ namespace ProjetoMei.Back.Repository
         UsuarioMeiModel Atualizar(UsuarioMeiDataModel usuarioMeiDataModel, int Id, string? senhaHash = null);
         bool Deletar(int Id);
         List<UsuarioMeiModel> BuscarVitrine();
+        List<UsuarioMeiModel> BuscarPorStatus(string? status);
+        UsuarioMeiModel DefinirStatus(int Id, string status, string? motivo);
         UsuarioMeiModel? BuscarPorEmail(string email);
         bool ExisteCpfOuEmail(string cpf, string email, int ignorarId = 0);
     }

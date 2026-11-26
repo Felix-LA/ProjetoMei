@@ -53,6 +53,10 @@
                 <li><a asp-controller="Contato" asp-action="Index" class="@Ativo("contato")">Contato</a></li>
                 @if (usuario != null)
                 {
+                    @if (usuario.EhAdmin)
+                    {
+                        <li><a asp-controller="Admin" asp-action="Index">Painel admin</a></li>
+                    }
                     <li><span class="topo-usuario"><i class="fa-solid fa-circle-user"></i> @usuario.PrimeiroNome</span></li>
                     <li><a asp-controller="Conta" asp-action="Sair">Sair</a></li>
                 }

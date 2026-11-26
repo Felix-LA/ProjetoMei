@@ -24,7 +24,11 @@
         <nav class="topo__menu">
             <a asp-controller="Home" asp-action="Index" class="@(pagina == "inicio" ? "ativo" : "")">Início</a>
             <a asp-controller="Home" asp-action="Index" asp-fragment="vitrine">Vitrine</a>
-            <a asp-controller="Usuarios" asp-action="Index" class="@(pagina == "usuarios" ? "ativo" : "")">Usuários</a>
+            @if (usuario?.EhAdmin == true)
+            {
+                <a asp-controller="Admin" asp-action="Index" class="@(pagina == "admin" ? "ativo" : "")">Cadastros</a>
+                <a asp-controller="Usuarios" asp-action="Index" class="@(pagina == "usuarios" ? "ativo" : "")">Usuários</a>
+            }
             @if (usuario != null)
             {
                 <span class="topo__usuario">@usuario.PrimeiroNome</span>

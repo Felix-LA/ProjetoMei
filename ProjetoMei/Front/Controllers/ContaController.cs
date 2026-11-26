@@ -36,12 +36,16 @@ namespace ProjetoMei.Front.Controllers
             LoginApi? usuario = resposta.Ok ? resposta.Dados<LoginApi>() : null;
             if (usuario != null && usuario.Id > 0)
             {
-                HttpContext.EntrarNaSessao(new SessaoUsuario(usuario.Id, usuario.Nome, usuario.Email, usuario.Plano));
+                HttpContext.EntrarNaSessao(new SessaoUsuario(usuario.Id, usuario.Nome, usuario.Email, usuario.Plano, usuario.Perfil));
                 Flash("sucesso", $"Bem-vindo(a), {usuario.Nome}!");
-                return RedirectToAction("Index", "Home");
+
+                // Administrador vai direto para o painel de análise dos cadastros.
+                return usuario.Perfil == "admin"
+                    ? RedirectToAction("Index", "Admin")
+                    : RedirectToAction("Index", "Home");
             }
 
-            // 401 = e-mail ou senha incorretos; 0 = API fora do ar; o resto traz a mensagem da API.
+            // 401 = e-mail ou senha incorretos; 403 = cadastro pendente/rejeitado; 0 = API fora do ar.
             Flash("erro", resposta.Status == 401 ? "E-mail ou senha incorretos." : resposta.Mensagem);
             return RedirectToAction(nameof(Login));
         }
